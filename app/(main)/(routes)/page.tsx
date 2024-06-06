@@ -8,7 +8,7 @@ export default async function HomePage() {
 
   return (
     <div>
-      <div className="bg-secondary">Home page</div>
+      <div>Home page</div>
       {userId ? (
         <div className="flex justify-between p-5">
           <ModeToggle />
