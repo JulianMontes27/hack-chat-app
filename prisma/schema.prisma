@@ -13,8 +13,88 @@ datasource db {
   url   = env("DATABASE_URL")
 }
 
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+model Profile {
+  id String @id @default(uuid())
+  userId String @unique
+  name String?
+  imgUrl String 
+  email String @unique
+
+  servers Server[]
+
+  member Member[]
+
+  channel Channel[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+} 
+
+model Server {
+  id String @id @default(uuid())
+  name String
+  imgUrl String
+  inviteCode String
+
+  profileId String
+  profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  members Member[]
+
+  channels Channel[]
+
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@map("servers")
 }
+
+//a member of a server can be either of these options:
+enum MemberRole {
+  ADMIN
+  GUEST
+  MOD
+}
+
+enum ChannelType {
+  TEXT
+  AUDIO
+  VIDEO
+}
+
+//member of a Server
+model Member{
+  id String @id @default(uuid())
+  role MemberRole @default(GUEST)
+
+  profileId String
+  profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  serverId String
+  server Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("members")
+}
+
+model Channel{
+  id String @id @default(uuid())
+  type ChannelType @default(TEXT)
+  name String
+
+  serverId String
+  server Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
+
+  profileId String
+  profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@map("channels")
+}
+
