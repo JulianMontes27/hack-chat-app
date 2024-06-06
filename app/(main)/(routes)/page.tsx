@@ -1,4 +1,4 @@
-import { SignInButton, SignOutButton } from "@clerk/nextjs";
+import { SignInButton, SignOutButton, UserButton } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 
 export default async function HomePage() {
@@ -7,7 +7,13 @@ export default async function HomePage() {
   return (
     <div>
       <div className="bg-secondary">Home page</div>
-      {userId ? <SignOutButton /> : <SignInButton />}
+      {userId ? (
+        <div className="flex justify-between p-5">
+          <UserButton />
+        </div>
+      ) : (
+        <SignInButton />
+      )}
     </div>
   );
 }
