@@ -1,10 +1,9 @@
-import React from "react";
-
 import { redirect } from "next/navigation";
 
 import { initialProfile } from "@/lib/initial-profile";
-import { UserButton } from "@clerk/nextjs";
 import prismadb from "@/lib/prismadb";
+
+import CreateServerModal from "@/components/modals/create-server-modal";
 
 const SetupPage = async () => {
   //call the initial-profile function to retrive or create a profile with the existing user
@@ -23,12 +22,8 @@ const SetupPage = async () => {
   if (server) {
     redirect(`/servers/${server.id}`);
   }
-  return (
-    <div>
-      {profile?.name}
-      <UserButton />
-    </div>
-  );
+  //this only runs if the user-profile is NOT part of a server
+  return <CreateServerModal />;
 };
 
 export default SetupPage;
