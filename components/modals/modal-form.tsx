@@ -4,6 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import Image from "next/image";
+
 import FileUploader from "../file-uploader";
 
 import { Button } from "@/components/ui/button";
@@ -57,12 +59,12 @@ export function CreateModalForm() {
               <FormControl>
                 <Input
                   disabled={form.formState.isSubmitting}
-                  placeholder="react-native-comumnity"
+                  placeholder="react-native-devs"
                   {...field}
                 />
               </FormControl>
               <FormDescription>
-                This is your public display name.
+                This is your Server's display name.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -82,7 +84,7 @@ export function CreateModalForm() {
                 />
               </FormControl>
               <FormDescription>
-                This is your public display name.
+                This is your Server's public image.
               </FormDescription>
               <FormMessage />
             </FormItem>

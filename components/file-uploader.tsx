@@ -2,9 +2,12 @@
 
 import React from "react";
 
+import Image from "next/image";
+
 import { UploadDropzone } from "@/lib/uploadthing";
 import "@uploadthing/react/styles.css";
-import { error } from "console";
+import { Trash } from "lucide-react";
+import { Button } from "./ui/button";
 
 interface FileUploaderProps {
   onChange: (url?: string) => void;
@@ -17,6 +20,30 @@ const FileUploader: React.FC<FileUploaderProps> = ({
   value,
   endpoint,
 }) => {
+  //check if there is a value, if so, make sure its an image and then render it
+  const fileType = value?.split(".").pop(); //file type
+  if (value && fileType !== "pdf") {
+    return (
+      <div className="flex items-center justify-center">
+        <div className="relative">
+          <Image
+            src={value}
+            alt={"Image"}
+            height={100}
+            width={100}
+            className="rounded-full mx-auto"
+          />
+          <button
+            type="button"
+            onClick={() => onChange("")}
+            className="rounded-full absolute top-0 right-0 shadow-sm bg-rose-500 text-white h-6 w-6 flex items-center justify-center"
+          >
+            <Trash size={15} />
+          </button>
+        </div>
+      </div>
+    );
+  }
   return (
     <UploadDropzone
       endpoint={endpoint}
