@@ -1,12 +1,17 @@
 "use client";
 
+import axios from "axios";
+
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+
+import toast from "react-hot-toast";
+
+import FileUploader from "../file-uploader";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
-import Image from "next/image";
-
-import FileUploader from "../file-uploader";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -32,6 +37,7 @@ const CreateServerFormSchema = z.object({
 type CreateServerFormType = z.infer<typeof CreateServerFormSchema>;
 
 export function CreateModalForm() {
+  const router = useRouter();
   // 1. Define your form.
   const form = useForm<CreateServerFormType>({
     resolver: zodResolver(CreateServerFormSchema),
@@ -42,10 +48,19 @@ export function CreateModalForm() {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: CreateServerFormType) {
+  async function onSubmit(values: CreateServerFormType) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
+    try {
+      await axios.post(`/api/servers`, values);
+      form.reset();
+      router.refresh();
+      window.location.reload();
+    } catch (error) {
+      toast.error(`[POST]: ${error}`, {
+        position: "bottom-right",
+      });
+    }
   }
   return (
     <Form {...form}>
