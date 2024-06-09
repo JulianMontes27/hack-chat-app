@@ -16,23 +16,19 @@ const ServerPage = async ({
     },
   });
   return (
-    <div className="w-full flex flex-row justify-between px-2 py-1">
-      <div>
-        <div className="flex items-center">{selectedServer?.name}</div>
+    <div className="h-full">
+      <div className="flex items-center justify-end gap-3 px-4 py-2">
+        <ModeToggle />
+        <UserButton
+          afterSignOutUrl="/"
+          appearance={{
+            elements: {
+              avatarBox: "h-[48px] w-[48px]",
+            },
+          }}
+        />
       </div>
-      <div className="">
-        <div className="flex items-center p-0 m-0 gap-4">
-          <ModeToggle />
-          <UserButton
-            afterSignOutUrl="/"
-            appearance={{
-              elements: {
-                avatarBox: "h-[48px] w-[48px]",
-              },
-            }}
-          />
-        </div>
-      </div>
+      <div>content!</div>
     </div>
   );
 };

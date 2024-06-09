@@ -40,12 +40,12 @@ const ServerIdLayout: React.FC<ServerIdLayoutProps> = async ({
   }
 
   return (
-    <section className="h-full">
+    <div className="h-full">
       <div className="hidden md:flex h-full w-60 z-20 flex-col fixed inset-y-0">
         <ServerIdChannelsList serverId={server.id} />
       </div>
       <div className="h-full md:pl-60">{children}</div>
-    </section>
+    </div>
   );
 };
 

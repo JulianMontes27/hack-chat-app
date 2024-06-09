@@ -1,7 +1,6 @@
 import React from "react";
 
 import Sidebar from "@/components/navigation/sidebar";
-import ServerChannels from "@/components/navigation/nav-actions";
 
 interface MainRoutesLayoutProps {
   children: React.ReactNode;
@@ -9,14 +8,12 @@ interface MainRoutesLayoutProps {
 
 const MainRoutesLayout: React.FC<MainRoutesLayoutProps> = ({ children }) => {
   return (
-    <main className="flex flex-row h-full">
+    <div className="flex flex-row h-full w-full">
       <section className="hidden md:flex flex-col h-full border w-[104px] overflow-x-hidden z-30">
         <Sidebar />
       </section>
-      <div>
-        {children}
-        </div>
-    </main>
+      <main className="w-full h-full">{children}</main>
+    </div>
   );
 };
 
