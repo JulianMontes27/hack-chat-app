@@ -20,7 +20,7 @@ const NavItem: React.FC<NavItemProps> = ({ id, imageUrl, name }) => {
   return (
     <ActionsTooltip label={`${name}`} side="right" align="center">
       <button
-        onClick={() => router.push(`/server/${id}`)}
+        onClick={() => router.push(`/servers/${id}`)}
         className="group relative flex items-center"
       >
         <div

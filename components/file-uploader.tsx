@@ -25,13 +25,13 @@ const FileUploader: React.FC<FileUploaderProps> = ({
   if (value && fileType !== "pdf") {
     return (
       <div className="flex items-center justify-center">
-        <div className="relative">
+        <div className="relative rounded-full">
           <Image
             src={value}
             alt={"Image"}
             height={100}
             width={100}
-            className="rounded-full mx-auto"
+            className="h-[120px] w-[120px] rounded-full"
           />
           <button
             type="button"

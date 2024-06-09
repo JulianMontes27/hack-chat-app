@@ -1,5 +1,7 @@
 "use client";
 
+import useModalStore from "@/hooks/use-modal-store";
+
 import axios from "axios";
 
 import Image from "next/image";
@@ -37,6 +39,7 @@ const CreateServerFormSchema = z.object({
 type CreateServerFormType = z.infer<typeof CreateServerFormSchema>;
 
 export function CreateModalForm() {
+  const { onClose } = useModalStore();
   const router = useRouter();
   // 1. Define your form.
   const form = useForm<CreateServerFormType>({
@@ -52,10 +55,13 @@ export function CreateModalForm() {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     try {
+      //submit post form
       await axios.post(`/api/servers`, values);
       form.reset();
       router.refresh();
-      window.location.reload();
+      toast.success("Created succesfully.");
+
+      onClose();
     } catch (error) {
       toast.error(`[POST]: ${error}`, {
         position: "bottom-right",
@@ -67,29 +73,9 @@ export function CreateModalForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input
-                  disabled={form.formState.isSubmitting}
-                  placeholder="react-native-devs"
-                  {...field}
-                />
-              </FormControl>
-              <FormDescription>
-                This is your Server's display name.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
           name="imgUrl"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="flex flex-col gap-5">
               <FormLabel>Image URL</FormLabel>
               <FormControl>
                 <FileUploader
@@ -100,6 +86,28 @@ export function CreateModalForm() {
               </FormControl>
               <FormDescription>
                 This is your Server's public image.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Name</FormLabel>
+
+              <FormControl>
+                <Input
+                  disabled={form.formState.isSubmitting}
+                  placeholder="react-native-devs"
+                  {...field}
+                  className="bg-white"
+                />
+              </FormControl>
+              <FormDescription>
+                This is your Server's display name.
               </FormDescription>
               <FormMessage />
             </FormItem>

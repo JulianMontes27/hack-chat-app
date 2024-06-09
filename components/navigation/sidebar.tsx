@@ -19,7 +19,7 @@ const Sidebar = async ({}) => {
   if (!profile) {
     redirect("/");
   }
-  //find all servers that the user is a parte of
+  //find all servers that the user is a part of
   const servers = await prismadb.server.findMany({
     where: {
       members: {
@@ -31,10 +31,10 @@ const Sidebar = async ({}) => {
   });
 
   return (
-    <div className="h-full w-full dark:bg-[#15191f] text-primary space-y-4 flex flex-col items-center border-none ">
+    <div className="h-full w-full bg-[#D3D3D3] dark:bg-[#15191f] text-primary space-y-4 flex flex-col items-center border-none ">
       <SidebarAction
         icon={
-          <Plus className="group-hover:text-white h-full w-full group-hover:bg-emerald-600 rounded-lg transition-all text-emerald-300" />
+          <Plus className="group-hover:text-white h-full w-full group-hover:bg-sky-500 rounded-lg transition text-sky-300 group-hover:rounded-lg " />
         }
       />
       <Separator />

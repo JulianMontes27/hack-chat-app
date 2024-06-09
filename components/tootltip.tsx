@@ -27,7 +27,7 @@ const ActionsTooltip: React.FC<ActionsTooltipProps> = ({
         <TooltipContent
           side={side}
           align={align}
-          className="font-semibold text-sm capitalize dark: text-white"
+          className="font-semibold text-sm capitalize dark:text-white text-black"
         >
           {label.toLowerCase()}
         </TooltipContent>

@@ -1,7 +1,11 @@
 import React from "react";
 
-const NavActions = () => {
-  return <div className="dark:bg-[#1e242d] h-full px-4">NavActions</div>;
+const ServerChannels = ({}) => {
+  return (
+    <div className="bg-[#f9f9f9] dark:bg-[#1e242d] h-full px-4">
+      {/* {params.serverId} */}
+    </div>
+  );
 };
 
-export default NavActions;
+export default ServerChannels;

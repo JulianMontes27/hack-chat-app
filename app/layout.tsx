@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 //providers
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/providers/theme-provider";
+import { ModalProvider } from "@/components/providers/modals/modal-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,6 +31,7 @@ export default function RootLayout({
             enableSystem={false}
             storageKey="hack-chat-theme"
           >
+            <ModalProvider />
             {children}
           </ThemeProvider>
         </body>
