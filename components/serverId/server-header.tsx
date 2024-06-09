@@ -1,3 +1,5 @@
+"use client";
+
 import { Server } from "@prisma/client";
 import { MemberRole } from "@prisma/client";
 
@@ -21,6 +23,7 @@ import {
   UserPlus2,
   Users,
 } from "lucide-react";
+import useModalStore from "@/hooks/use-modal-store";
 
 interface ServerHeaderProps {
   server: ServerWithMembersAndProfiles;
@@ -28,6 +31,8 @@ interface ServerHeaderProps {
 }
 
 const ServerHeader: React.FC<ServerHeaderProps> = ({ server, role }) => {
+  const { onOpen } = useModalStore();
+
   //check if the role of the user in the server is ADMIN and/or MOD
   const isAdmin = role === MemberRole.ADMIN;
   const isMod = isAdmin || role === MemberRole.MOD;
@@ -42,14 +47,18 @@ const ServerHeader: React.FC<ServerHeaderProps> = ({ server, role }) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 text-xs font-medium text-black dark:text-neutral-400 space-y-[2px]">
         {isMod && (
-          <DropdownMenuItem className="text-sm text-sky-700 dark:text-sky-500 cursor-pointer flex flex-row justify-between">
+          <DropdownMenuItem
+            className="text-sm text-sky-700 dark:text-sky-500 cursor-pointer flex flex-row justify-between"
+            onClick={() => onOpen("invite-member", { server })}
+          >
             Invite dev
             <UserPlus2 />
           </DropdownMenuItem>
         )}
         {isAdmin && (
           <DropdownMenuItem className=" cursor-pointer flex flex-row justify-between">
-            Server settings <span className="font-bold text-yellow-400">(ADMIN)</span>
+            Server settings{" "}
+            <span className="font-bold text-yellow-400">(ADMIN)</span>
             <Settings />
           </DropdownMenuItem>
         )}
@@ -79,7 +88,7 @@ const ServerHeader: React.FC<ServerHeaderProps> = ({ server, role }) => {
             <Trash2 />
           </DropdownMenuItem>
         )}
-        {isAdmin && (
+        {!isAdmin && (
           <DropdownMenuItem className=" cursor-pointer flex flex-row justify-between ">
             Leave server
             <LucideAirVent />

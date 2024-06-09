@@ -8,6 +8,8 @@ import { cn } from "@/lib/utils";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { ModalProvider } from "@/components/providers/modals/modal-provider";
+import { ToastProvider } from "@/components/ui/toast";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,6 +36,7 @@ export default function RootLayout({
             <ModalProvider />
             {children}
           </ThemeProvider>
+          <Toaster />
         </body>
       </html>
     </ClerkProvider>

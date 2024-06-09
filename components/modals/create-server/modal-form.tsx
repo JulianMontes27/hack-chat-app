@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 
 import toast from "react-hot-toast";
 
-import FileUploader from "../file-uploader";
+import FileUploader from "@/components/file-uploader";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";

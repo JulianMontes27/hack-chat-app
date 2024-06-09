@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { initialProfile } from "@/lib/initial-profile";
 import prismadb from "@/lib/prismadb";
 
-import CreateServerModal from "@/components/modals/create-server-modal";
+import CreateServerModal from "@/components/modals/create-server/create-server-modal";
 
 const SetupPage = async () => {
   //call the initial-profile function to retrive or create a profile with the existing user
