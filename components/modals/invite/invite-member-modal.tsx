@@ -6,6 +6,7 @@ import useModalStore from "@/hooks/use-modal-store";
 
 import { useOrigin } from "@/hooks/use-origin";
 import { useState } from "react";
+
 import toast from "react-hot-toast";
 
 import {
@@ -21,7 +22,7 @@ import { Button } from "@/components/ui/button";
 import { Check, Copy, RefreshCcwIcon } from "lucide-react";
 
 export default function InviteModal() {
-  const { isOpen, onClose, modalType, data } = useModalStore();
+  const { isOpen, onOpen, onClose, modalType, data } = useModalStore();
   const [isCopied, setIsCopied] = useState(false);
   const [isLoading, setisLoading] = useState(false);
 
@@ -41,7 +42,6 @@ export default function InviteModal() {
       .catch((err) => {
         toast.error(err);
       });
-
     setTimeout(() => {
       setIsCopied(false);
     }, 1000);
@@ -57,7 +57,9 @@ export default function InviteModal() {
           toast.success("Invite code regenerated succesfully.", {
             position: "bottom-right",
           });
+          onOpen("invite-member", { server: res.data });
         })
+
         .catch((err: AxiosError) => {
           console.log(err);
         });
