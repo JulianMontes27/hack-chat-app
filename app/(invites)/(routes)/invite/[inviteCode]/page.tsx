@@ -36,8 +36,7 @@ const InviteCodePage: React.FC<InviteCodePageProps> = async ({ params }) => {
   if (server) {
     return redirect(`/servers/${server.id}`);
   }
-
-  //if the recipient is not a member
+  //if the recipient is NOT a member
   const res = await prismadb.server.update({
     where: {
       inviteCode: params.inviteCode,
@@ -49,12 +48,7 @@ const InviteCodePage: React.FC<InviteCodePageProps> = async ({ params }) => {
     },
   });
 
-  return (
-    <div>
-      <div>Invite page</div>
-      <div>{params.inviteCode}</div>
-    </div>
-  );
+  return null;
 };
 
 export default InviteCodePage;

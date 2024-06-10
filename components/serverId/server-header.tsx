@@ -1,6 +1,5 @@
 "use client";
 
-import { Server } from "@prisma/client";
 import { MemberRole } from "@prisma/client";
 
 import React from "react";
@@ -56,8 +55,11 @@ const ServerHeader: React.FC<ServerHeaderProps> = ({ server, role }) => {
           </DropdownMenuItem>
         )}
         {isAdmin && (
-          <DropdownMenuItem className=" cursor-pointer flex flex-row justify-between">
-            Server settings{" "}
+          <DropdownMenuItem
+            className=" cursor-pointer flex flex-row justify-between"
+            onClick={() => onOpen("edit-server", { server })}
+          >
+            Server settings
             <span className="font-bold text-yellow-400">(ADMIN)</span>
             <Settings />
           </DropdownMenuItem>
