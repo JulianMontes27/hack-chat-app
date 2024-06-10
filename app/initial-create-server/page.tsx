@@ -32,6 +32,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 
 const CreateServerFormSchema = z.object({
@@ -46,10 +47,6 @@ const CreateServerFormSchema = z.object({
 type CreateServerFormType = z.infer<typeof CreateServerFormSchema>;
 
 export default function CreateServerModal() {
-  const { isOpen, onClose, modalType } = useModalStore();
-  const handleClose = () => {
-    onClose();
-  };
   const router = useRouter();
 
   // 1. Define your form.
@@ -70,9 +67,8 @@ export default function CreateServerModal() {
       await axios.post(`/api/servers`, values);
       form.reset();
       router.refresh();
+      router.push("/");
       toast.success("Created succesfully.");
-
-      onClose();
     } catch (error) {
       toast.error(`[POST]: ${error}`, {
         position: "bottom-right",
@@ -81,11 +77,28 @@ export default function CreateServerModal() {
   }
 
   return (
-    <>
-      <Dialog
-        open={isOpen && modalType === "create-server"}
-        onOpenChange={handleClose}
-      >
+    <div className="h-full w-full flex items-center justify-center">
+      <Dialog>
+        <div className="max-w-xl flex">
+          <DialogHeader className="py-3 px-3">
+            <DialogTitle className="font-bold text-4xl mb-2">
+              Create your first
+              <DialogTrigger>
+                <span className="inline-block bg-gradient-to-r from-blue-600 via-green-500 to-indigo-400 text-transparent bg-clip-text text-[40px] mx-2">
+                  Dev-server!
+                </span>
+              </DialogTrigger>
+            </DialogTitle>
+
+            <DialogDescription className="flex flex-col w-full items-star gap-2">
+              <span className="text-[16px] font-semibold ">
+                Start working together with other devs by clicking the colored
+                words
+              </span>
+            </DialogDescription>
+          </DialogHeader>
+        </div>
+
         <DialogContent className="bg-white text-black sm:max-w-[425px] overflow-hidden rounded-md">
           <DialogHeader className="py-3 px-3">
             <DialogTitle className="font-bold text-2xl mb-2">
@@ -157,6 +170,6 @@ export default function CreateServerModal() {
           </Form>
         </DialogContent>
       </Dialog>
-    </>
+    </div>
   );
 }

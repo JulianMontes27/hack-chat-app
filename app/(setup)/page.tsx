@@ -23,7 +23,7 @@ const SetupPage = async () => {
     redirect(`/servers/${server.id}`);
   }
   //this only runs if the user-profile is NOT part of a server
-  return <CreateServerModal />;
+  redirect("/initial-create-server");
 };
 
 export default SetupPage;

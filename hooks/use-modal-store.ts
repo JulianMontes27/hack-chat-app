@@ -34,6 +34,3 @@ const useModalStore = create<ModalStore>((set, get) => ({
 }));
 
 export default useModalStore;
-
-
-
