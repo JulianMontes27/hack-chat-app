@@ -1,5 +1,9 @@
 "use client";
 
+import qs from "query-string";
+
+import axios from "axios";
+
 import useModalStore from "@/hooks/use-modal-store";
 import { useState } from "react";
 
@@ -14,12 +18,9 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuPortal,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
@@ -43,6 +44,7 @@ import {
 import toast from "react-hot-toast";
 
 import { MemberRole } from "@prisma/client";
+import { useRouter } from "next/navigation";
 
 const roleIconMap = {
   GUEST: null,
@@ -50,21 +52,32 @@ const roleIconMap = {
   ADMIN: <ShieldAlert className="h-4 w-4 text-rose-500" />,
 };
 
-export default function InviteModal() {
-  const { isOpen, onClose, modalType, data } = useModalStore();
+export default function ManageServerMembers() {
+  const { isOpen, onClose, modalType, data, onOpen } = useModalStore();
 
   const [loadingId, setLoadingId] = useState("");
 
+  const router = useRouter();
+
   const { server } = data as { server: ServerWithMembersAndProfiles };
 
-  const onRoleChange = async (memberId:string, role: MemberRole) => {
+  const onRoleChange = async (memberId: string, role: MemberRole) => {
     try {
-      setLoadingId(memberId)
-      const res = await 
+      setLoadingId(memberId);
+      const url = qs.stringifyUrl({
+        url: `/api/members/${memberId}`,
+        query: {
+          serverId: server?.id,
+        },
+      });
+      const res = await axios.patch(url, { role });
+
+      router.refresh();
+      onOpen("manage-members", { server: res.data });
     } catch (error) {
       toast.error("Try again.");
-    }finally{
-      setLoadingId("")
+    } finally {
+      setLoadingId("");
     }
   };
   return (
@@ -78,11 +91,11 @@ export default function InviteModal() {
             Manage members
           </DialogTitle>
           <DialogDescription className="flex flex-col w-full items-star gap-2 text-[16px] font-semibold ">
-            <p>{server?.members.length} Members</p>
+            <p>{server?.members?.length} Members</p>
           </DialogDescription>
         </DialogHeader>
         <ScrollArea className="max-h-[420px] w-full rounded-md mt-8">
-          {server?.members.map((member) => (
+          {server?.members?.map((member) => (
             <div
               key={member.id}
               className="mb-6 flex flex-row justify-between items-center"
@@ -117,13 +130,17 @@ export default function InviteModal() {
                           </DropdownMenuSubTrigger>
                           <DropdownMenuPortal>
                             <DropdownMenuSubContent>
-                              <DropdownMenuItem>
+                              <DropdownMenuItem
+                                onClick={() => onRoleChange(member.id, "GUEST")}
+                              >
                                 <Shield /> Guest
                                 {member.role === "GUEST" && (
                                   <Check className="h-4 w-4 ml-auto" />
                                 )}
                               </DropdownMenuItem>
-                              <DropdownMenuItem>
+                              <DropdownMenuItem
+                                onClick={() => onRoleChange(member.id, "MOD")}
+                              >
                                 <ShieldCheck /> Moderator
                                 {member.role === "MOD" && (
                                   <Check className="h-4 w-4 ml-auto" />
