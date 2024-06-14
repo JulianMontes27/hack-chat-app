@@ -65,7 +65,10 @@ const ServerHeader: React.FC<ServerHeaderProps> = ({ server, role }) => {
           </DropdownMenuItem>
         )}
         {isAdmin && (
-          <DropdownMenuItem className=" cursor-pointer flex flex-row justify-between">
+          <DropdownMenuItem
+            className=" cursor-pointer flex flex-row justify-between"
+            onClick={() => onOpen("manage-members", { server })}
+          >
             <div className="flex items-center flex-row">
               <p className="p-0 m-0">
                 Manage members{" "}

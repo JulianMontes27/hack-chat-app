@@ -1,7 +1,6 @@
 import useModalStore from "@/hooks/use-modal-store";
-import { useState } from "react";
 
-import axios, { AxiosError, AxiosResponse } from "axios";
+import axios from "axios";
 
 import { useRouter } from "next/navigation";
 
@@ -32,6 +31,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { useEffect } from "react";
 
 const CreateServerFormSchema = z.object({
   name: z
@@ -52,7 +52,6 @@ type CreateServerFormType = z.infer<typeof CreateServerFormSchema>;
 
 export default function EditServerModal() {
   const { isOpen, onClose, modalType, data } = useModalStore();
-
   const handleClose = () => {
     onClose();
   };
@@ -68,27 +67,28 @@ export default function EditServerModal() {
     },
   });
 
+  useEffect(() => {
+    if (data.server) {
+      form.setValue("imgUrl", data.server.imgUrl);
+      form.setValue("name", data.server.name);
+    }
+  }, [data.server, form]);
+
   // 2. Define a submit handler.
   async function onSubmit(values: CreateServerFormType) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     try {
-      const res = axios
+      const res = await axios
         .patch(`/api/servers/${data.server?.id}`, values)
-        .then((res: AxiosResponse) => {
-          toast.success("Invite code regenerated succesfully.", {
-            position: "bottom-right",
-          });
-          onClose();
-          router.push(`/servers/${data.server?.id}`);
-          router.refresh();
-        })
-
-        .catch((err: AxiosError) => {
-          console.log(err);
+        .then((res) => {
+          if (res.status === 200) {
+            toast.success("Changes saved.");
+          }
         });
+      router.refresh();
+      onClose(); //close modal when everything is udpated.
     } catch (error) {
-      console.log(error);
       toast.error("Error submiting your request.");
     }
   }
@@ -117,7 +117,9 @@ export default function EditServerModal() {
                 name="imgUrl"
                 render={({ field }) => (
                   <FormItem className="flex flex-col gap-5">
-                    <FormLabel>Image URL</FormLabel>
+                    <FormLabel className="uppercase text-xs font-bold text-zinc-500/90">
+                      Image URL
+                    </FormLabel>
                     <FormControl>
                       <FileUploader
                         endpoint="serverImage"
@@ -137,7 +139,11 @@ export default function EditServerModal() {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Name</FormLabel>
+                    <FormLabel
+                      className={"text-xs uppercase font-bold text-zinc-500/90"}
+                    >
+                      Server name
+                    </FormLabel>
 
                     <FormControl>
                       <Input
@@ -160,7 +166,7 @@ export default function EditServerModal() {
                 type="submit"
                 className="w-full text-white bg-indigo-500 hover:bg-indigo-500/90"
               >
-                Create
+                Save
               </Button>
             </form>
           </Form>

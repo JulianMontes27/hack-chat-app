@@ -19,16 +19,6 @@ export async function PATCH(
 
   const body = await req.json();
   const { name, imgUrl } = body;
-  // if (!name) {
-  //   return new NextResponse("[SERVERS_POST]: name is required.", {
-  //     status: 500,
-  //   });
-  // }
-  // if (!imgUrl) {
-  //   return new NextResponse("[SERVERS_POST]: imgUrl is required.", {
-  //     status: 500,
-  //   });
-  // }
 
   try {
     const res = await prismadb.server.update({
