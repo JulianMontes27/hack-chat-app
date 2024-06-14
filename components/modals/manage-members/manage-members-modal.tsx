@@ -1,6 +1,7 @@
 "use client";
 
 import useModalStore from "@/hooks/use-modal-store";
+import { useState } from "react";
 
 import {
   Dialog,
@@ -10,11 +11,38 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 import UserAvatar from "./user-avatar";
 
 import { ServerWithMembersAndProfiles } from "@/components/server-id-channels-list";
-import { ShieldAlert, ShieldCheck } from "lucide-react";
+import {
+  Check,
+  GavelIcon,
+  Loader2,
+  MoreVertical,
+  Shield,
+  ShieldAlert,
+  ShieldCheck,
+  ShieldQuestion,
+} from "lucide-react";
+
+import toast from "react-hot-toast";
+
+import { MemberRole } from "@prisma/client";
 
 const roleIconMap = {
   GUEST: null,
@@ -25,11 +53,20 @@ const roleIconMap = {
 export default function InviteModal() {
   const { isOpen, onClose, modalType, data } = useModalStore();
 
+  const [loadingId, setLoadingId] = useState("");
+
   const { server } = data as { server: ServerWithMembersAndProfiles };
 
-  const tags = Array.from({ length: 50 }).map(
-    (_, i, a) => `v1.2.0-beta.${a.length - i}`
-  );
+  const onRoleChange = async (memberId:string, role: MemberRole) => {
+    try {
+      setLoadingId(memberId)
+      const res = await 
+    } catch (error) {
+      toast.error("Try again.");
+    }finally{
+      setLoadingId("")
+    }
+  };
   return (
     <Dialog
       open={isOpen && modalType === "manage-members"}
@@ -46,7 +83,10 @@ export default function InviteModal() {
         </DialogHeader>
         <ScrollArea className="max-h-[420px] w-full rounded-md mt-8">
           {server?.members.map((member) => (
-            <div key={member.id} className="mb-6">
+            <div
+              key={member.id}
+              className="mb-6 flex flex-row justify-between items-center"
+            >
               <div>
                 <div className="flex flex-row items-center gap-3">
                   <UserAvatar src={member.profile.imgUrl} />
@@ -59,10 +99,50 @@ export default function InviteModal() {
                   </p>
                 </div>
               </div>
-
               <div>
-                
+                {server.profileId !== member.profileId &&
+                  loadingId !== member.id && (
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <MoreVertical className="cursor-pointer text-zinc-500/90" />
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent
+                        className="dark:bg-zinc-50 bg-white border-none text-black"
+                        side="left"
+                      >
+                        <DropdownMenuSub>
+                          <DropdownMenuSubTrigger>
+                            <ShieldQuestion />
+                            <span className="ml-3">Role</span>
+                          </DropdownMenuSubTrigger>
+                          <DropdownMenuPortal>
+                            <DropdownMenuSubContent>
+                              <DropdownMenuItem>
+                                <Shield /> Guest
+                                {member.role === "GUEST" && (
+                                  <Check className="h-4 w-4 ml-auto" />
+                                )}
+                              </DropdownMenuItem>
+                              <DropdownMenuItem>
+                                <ShieldCheck /> Moderator
+                                {member.role === "MOD" && (
+                                  <Check className="h-4 w-4 ml-auto" />
+                                )}
+                              </DropdownMenuItem>
+                            </DropdownMenuSubContent>
+                          </DropdownMenuPortal>
+                        </DropdownMenuSub>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem>
+                          <GavelIcon className="mr-3" /> kick
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  )}
               </div>
+              {loadingId == member.id && (
+                <Loader2 className="animate-spin text-zinc-500 ml-auto" />
+              )}
             </div>
           ))}
         </ScrollArea>
