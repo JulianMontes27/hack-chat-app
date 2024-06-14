@@ -80,6 +80,25 @@ export default function ManageServerMembers() {
       setLoadingId("");
     }
   };
+
+  const onKick = async (memberId: string) => {
+    try {
+      setLoadingId(memberId);
+      const url = qs.stringifyUrl({
+        url: `/api/members/${memberId}`,
+        query: {
+          serverId: server.id,
+        },
+      });
+      const res = await axios.delete(url);
+      router.refresh();
+      onOpen("manage-members", { server: res.data });
+    } catch (error) {
+      toast.error("Error kicking member.");
+    } finally {
+      setLoadingId("");
+    }
+  };
   return (
     <Dialog
       open={isOpen && modalType === "manage-members"}
@@ -150,7 +169,7 @@ export default function ManageServerMembers() {
                           </DropdownMenuPortal>
                         </DropdownMenuSub>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => onKick(member.id)}>
                           <GavelIcon className="mr-3" /> kick
                         </DropdownMenuItem>
                       </DropdownMenuContent>

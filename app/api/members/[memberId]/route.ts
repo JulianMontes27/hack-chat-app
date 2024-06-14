@@ -1,5 +1,6 @@
 import { currentProfile } from "@/lib/current-profile";
 import prismadb from "@/lib/prismadb";
+import { profile } from "console";
 import next from "next";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -59,5 +60,60 @@ export async function PATCH(
     return NextResponse.json(server);
   } catch (error) {
     return new NextResponse("[PATCH] Internal error.");
+  }
+}
+
+export async function DELETE(
+  req: NextRequest,
+  {
+    params,
+  }: {
+    params: {
+      memberId: string;
+    };
+  }
+) {
+  try {
+    const userProfile = await currentProfile();
+    if (!userProfile) return new NextResponse("Unauthorized", { status: 401 });
+
+    const { searchParams } = new URL(req.url);
+    const serverId = searchParams.get("serverId");
+    if (!serverId)
+      return new NextResponse("Server Id is missing", { status: 400 });
+
+    if (!params.memberId)
+      return new NextResponse("Member Id is missing", { status: 400 });
+
+    const server = await prismadb.server.update({
+      where: {
+        id: serverId,
+        profileId: userProfile.id,
+      },
+      data: {
+        members: {
+          deleteMany: {
+            id: params.memberId,
+            profileId: {
+              not: userProfile.id, //admin cant kick themselves
+            },
+          },
+        },
+      },
+      include: {
+        members: {
+          include: {
+            profile: true,
+          },
+          orderBy: {
+            role: "asc",
+          },
+        },
+      },
+    });
+
+    return NextResponse.json(server);
+  } catch (error) {
+    console.log("[MEMBER_ID_DELETE]", error);
   }
 }
