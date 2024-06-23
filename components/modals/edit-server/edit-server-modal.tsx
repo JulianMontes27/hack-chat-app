@@ -128,7 +128,7 @@ export default function EditServerModal() {
                       />
                     </FormControl>
                     <FormDescription>
-                      This is your Server's public image.
+                      This is your Server&apos;s public image.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -154,7 +154,7 @@ export default function EditServerModal() {
                       />
                     </FormControl>
                     <FormDescription>
-                      This is your Server's display name.
+                      This is your Server&apos;s display name.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>

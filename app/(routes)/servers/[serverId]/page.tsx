@@ -28,7 +28,7 @@ const ServerPage = async ({
           }}
         />
       </div>
-      <div>content!</div>
+      <div>{selectedServer?.name}</div>
     </div>
   );
 };

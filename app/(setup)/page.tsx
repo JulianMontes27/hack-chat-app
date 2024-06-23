@@ -1,13 +1,33 @@
 import { redirect } from "next/navigation";
 
-import { initialProfile } from "@/lib/initial-profile";
 import prismadb from "@/lib/prismadb";
+import { currentUser } from "@clerk/nextjs/server";
 
-import CreateServerModal from "@/components/modals/create-server/create-server-modal";
+import LandingPage from "@/components/landing-page/public-landing-page";
 
 const SetupPage = async () => {
-  //call the initial-profile function to retrive or create a profile with the existing user
-  const profile = await initialProfile();
+  const user = await currentUser();
+  if (!user) {
+    return <LandingPage />;
+  }
+  //if there is a User logged in, check if there is a profile linked to it
+  let profile = await prismadb.profile.findUnique({
+    where: {
+      userId: user.id,
+    },
+  });
+  //if there is no profile linked to the currently signed in User...
+  if (!profile) {
+    //create profile
+    profile = await prismadb.profile.create({
+      data: {
+        userId: user.id,
+        name: user.fullName,
+        email: user.emailAddresses[0].emailAddress,
+        imgUrl: user.imageUrl,
+      },
+    });
+  }
   //find if this profile is member of a server
   const server = await prismadb.server.findFirst({
     where: {
@@ -20,10 +40,10 @@ const SetupPage = async () => {
   });
   //if the profile is part of a server
   if (server) {
-    redirect(`/servers/${server.id}`);
+    return redirect(`/servers/${server.id}`);
   }
-  //this only runs if the user-profile is NOT part of a server
-  redirect("/initial-create-server");
+
+  return redirect("/onboarding");
 };
 
 export default SetupPage;

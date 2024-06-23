@@ -7,11 +7,8 @@ import { Separator } from "../ui/separator";
 import { ScrollArea } from "../ui/scroll-area";
 import NavItem from "./nav-item";
 
-import Image from "next/image";
 import { redirect } from "next/navigation";
 import React from "react";
-
-interface SidebarProps {}
 
 const Sidebar = async ({}) => {
   //fetch the current profile

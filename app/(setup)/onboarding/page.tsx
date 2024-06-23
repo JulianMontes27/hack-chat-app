@@ -1,7 +1,5 @@
 "use client";
 
-import useModalStore from "@/hooks/use-modal-store";
-
 import axios from "axios";
 
 import { useRouter } from "next/navigation";
@@ -130,7 +128,7 @@ export default function CreateServerModal() {
                       />
                     </FormControl>
                     <FormDescription>
-                      This is your Server's public image.
+                      This is your Server&apos;s public image.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -152,7 +150,7 @@ export default function CreateServerModal() {
                       />
                     </FormControl>
                     <FormDescription>
-                      This is your Server's display name.
+                      This is your Server&apos;s display name.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -164,7 +162,7 @@ export default function CreateServerModal() {
                 type="submit"
                 className="w-full text-white bg-indigo-500 hover:bg-indigo-500/90"
               >
-                Create
+                Create server
               </Button>
             </form>
           </Form>

@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { ModalProvider } from "@/components/providers/modals/modal-provider";
+
 import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
