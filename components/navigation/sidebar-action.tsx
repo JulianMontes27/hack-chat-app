@@ -2,27 +2,22 @@
 
 import useModalStore from "@/hooks/use-modal-store";
 import ActionsTooltip from "../tootltip";
+import { PlusIcon } from "lucide-react";
 
-interface SidebarActionProps {
-  icon: React.ReactNode;
-}
-
-const SidebarAction: React.FC<SidebarActionProps> = ({ icon }) => {
+const SidebarAction = () => {
   const { onOpen } = useModalStore();
   return (
-    <div className="w-full flex items-center justify-center mt-2 ">
-      <ActionsTooltip side="right" align="center" label={"Create a dev server"}>
+    <ActionsTooltip side="right" align="center" label={"Create a dev server"}>
+      <div className="group relative flex items-center ">
         <button
-          className="group rounded-full h-[48px] w-[48px] bg-gray-100 dark:bg-gray-500 flex items-center justify-center border-none transition"
+          className="relative group flex mx-3 h-[48px] w-[48px] rounded-[24px] group-hover:rounded-[16px] transition-all overflow-hidden border border-rose-400"
           onClick={() => onOpen("create-server")}
         >
-          {icon}
+          <PlusIcon className="m-auto" />
         </button>
-      </ActionsTooltip>
-    </div>
+      </div>
+    </ActionsTooltip>
   );
 };
 
 export default SidebarAction;
-
-

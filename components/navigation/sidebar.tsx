@@ -28,14 +28,11 @@ const Sidebar = async ({}) => {
   });
 
   return (
-    <div className="h-full w-full bg-[#D3D3D3] dark:bg-[#15191f] text-primary space-y-4 flex flex-col items-center border-none ">
-      <SidebarAction
-        icon={
-          <Plus className="group-hover:text-white h-full w-full group-hover:bg-sky-500 rounded-lg transition text-sky-300 group-hover:rounded-lg " />
-        }
-      />
+    <div className="h-full w-full bg-[#D3D3D3] dark:bg-[#191e25] text-primary  flex flex-col items-center border-none ">
+      <SidebarAction />
       <Separator />
-      <ScrollArea className="w-full">
+
+      <ScrollArea className="w-full mt-6">
         {servers.map((server) => (
           <div
             key={server.id}

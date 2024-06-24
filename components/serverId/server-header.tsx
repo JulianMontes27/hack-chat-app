@@ -23,6 +23,7 @@ import {
   Users,
 } from "lucide-react";
 import useModalStore from "@/hooks/use-modal-store";
+import { Separator } from "../ui/separator";
 
 interface ServerHeaderProps {
   server: ServerWithMembersAndProfiles;
@@ -38,11 +39,16 @@ const ServerHeader: React.FC<ServerHeaderProps> = ({ server, role }) => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild className="focus: outline-none">
-        <button className="w-full text-md font-semibold px-3 flex items-center h-12 border-neutral-200 dark:border-neutral-800 border-b-2 hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition">
-          {server.name}
-          <ChevronDown className="h-5 w-5 ml-auto" />
-        </button>
+      <DropdownMenuTrigger
+        asChild
+        className="focus:outline-none px-5 dark:border-neutral-800  hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition"
+      >
+        <div className="flex flex-row border items-center">
+          <button className="h-[48px] w-full text-md font-semibold flex items-center   ">
+            {server.name}
+          </button>
+          <ChevronDown className="h-5 w-5" />
+        </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 text-xs font-medium text-black dark:text-neutral-400 space-y-[2px]">
         {isMod && (

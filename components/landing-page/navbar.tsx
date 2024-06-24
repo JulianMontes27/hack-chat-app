@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 import { cn } from "@/lib/utils";
+import NavbarDropdownMenu from "./nav-dropdown";
 
 const Navbar = () => {
   const [scroll, setScroll] = useState(false);
@@ -47,8 +48,8 @@ const Navbar = () => {
       )}
     >
       <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
-          <div className="md:flex md:items-center md:gap-12">
+        <div className="flex flex-row items-center justify-between">
+          <div className="md:flex md:items-center md:gap-12 text-white">
             <a className="block " href="#">
               <span className="sr-only">Home</span>
               <svg
@@ -67,7 +68,7 @@ const Navbar = () => {
 
           <div className="hidden md:block">
             <nav aria-label="Global">
-              <ul className="flex items-center gap-6 text-sm">
+              <ul className="flex items-center gap-6 text-sm text-white">
                 {routes.map((route) => (
                   <li key={route.href}>
                     <Link
@@ -81,16 +82,16 @@ const Navbar = () => {
               </ul>
             </nav>
           </div>
-          <div className="flex flex-row gap-5">
+          <div className="flex flex-row gap-5 items-center">
             <div className="flex items-center gap-4">
               <div className="sm:flex sm:gap-4">
-                <a
-                  href="#"
-                  className="inline-block rounded bg-pink-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-pink-700 focus:outline-none focus:ring focus:ring-yellow-400"
-                >
+                <div className="inline-block  bg-pink-600 text-center  text-sm font-medium text-white transition-all hover:bg-pink-500 focus:outline-none focus:ring focus:ring-yellow-400 px-4 py-2 rounded-sm w-[100px] text">
                   <SignInButton />
-                </a>
+                </div>
               </div>
+            </div>
+            <div className="md:hidden ">
+              <NavbarDropdownMenu routes={routes} />
             </div>
           </div>
         </div>

@@ -1,7 +1,10 @@
 import { ModeToggle } from "@/components/providers/themes/toggle-theme";
+
 import prismadb from "@/lib/prismadb";
 import { UserButton } from "@clerk/nextjs";
+
 import React from "react";
+import ServerPageMainContent from "./components/main-content";
 
 const ServerPage = async ({
   params,
@@ -10,11 +13,14 @@ const ServerPage = async ({
     serverId: string;
   };
 }) => {
-  const selectedServer = await prismadb.server.findUnique({
+  const server = await prismadb.server.findUnique({
     where: {
       id: params.serverId,
     },
   });
+  if (!server) {
+    return null;
+  }
   return (
     <div className="h-full">
       <div className="flex items-center justify-end gap-3 px-4 py-2">
@@ -28,7 +34,7 @@ const ServerPage = async ({
           }}
         />
       </div>
-      <div>{selectedServer?.name}</div>
+      <ServerPageMainContent server={server} />
     </div>
   );
 };

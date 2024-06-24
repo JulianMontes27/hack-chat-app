@@ -4,15 +4,16 @@ const Hero = () => {
   return (
     <section className="bg-gray-900 text-white pt-20 ">
       <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
-        <div className="mx-auto max-w-lg text-center">
-          <h2 className="text-3xl font-bold sm:text-4xl">
-            Kickstart your marketing
-          </h2>
+        <div className="mx-auto text-center">
+          <h1 className="bg-gradient-to-r from-white via-rose-200 to-rose-500 bg-clip-text text-3xl font-extrabold text-transparent sm:text-7xl mb-8 ">
+            Collaborate in real-time sessions.
+            <span className="sm:block mt-2"> Increase productivity. </span>
+          </h1>
 
-          <p className="mt-4 text-gray-300">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-            Consequuntur aliquam doloribus nesciunt eos fugiat. Vitae aperiam
-            fugit consequuntur saepe laborum.
+          <p className="mx-auto max-w-xl sm:text-xl/relaxed mb-10">
+            HackChat makes it easy for you and your team to work together
+            through real-time chats and audio and video calls, with special
+            features to code easier and faster!
           </p>
         </div>
 
