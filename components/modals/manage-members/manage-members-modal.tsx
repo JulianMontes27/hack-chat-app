@@ -110,7 +110,7 @@ export default function ManageServerMembers() {
             Manage members
           </DialogTitle>
           <DialogDescription className="flex flex-col w-full items-star gap-2 text-[16px] font-semibold ">
-            <p>{server?.members?.length} Members</p>
+            <span>{server?.members?.length} Members</span>
           </DialogDescription>
         </DialogHeader>
         <ScrollArea className="max-h-[420px] w-full rounded-md mt-8">
@@ -126,9 +126,9 @@ export default function ManageServerMembers() {
                   {roleIconMap[member.role]}
                 </div>
                 <div>
-                  <p className="text-sm text-zinc-500/90 mt-2">
+                  <span className="text-sm text-zinc-500/90 mt-2">
                     {member.profile.email}
-                  </p>
+                  </span>
                 </div>
               </div>
               <div>

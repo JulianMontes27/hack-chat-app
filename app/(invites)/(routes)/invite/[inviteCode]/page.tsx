@@ -22,7 +22,7 @@ const InviteCodePage: React.FC<InviteCodePageProps> = async ({ params }) => {
   if (!params.inviteCode) redirect("/");
 
   //check if the recipient is already a member in the server
-  const server = await prismadb.server.findFirst({
+  let server = await prismadb.server.findFirst({
     where: {
       inviteCode: params.inviteCode,
       members: {
@@ -37,7 +37,7 @@ const InviteCodePage: React.FC<InviteCodePageProps> = async ({ params }) => {
     return redirect(`/servers/${server.id}`);
   }
   //if the recipient is NOT a member
-  const res = await prismadb.server.update({
+  server = await prismadb.server.update({
     where: {
       inviteCode: params.inviteCode,
     },
@@ -48,7 +48,7 @@ const InviteCodePage: React.FC<InviteCodePageProps> = async ({ params }) => {
     },
   });
 
-  return null;
+  return redirect(`/servers/${server.id}`);
 };
 
 export default InviteCodePage;

@@ -1,6 +1,6 @@
 import { currentProfile } from "@/lib/current-profile";
 import prismadb from "@/lib/prismadb";
-import { Server } from "@prisma/client";
+
 import { ChannelType } from "@prisma/client";
 import { Prisma } from "@prisma/client";
 
@@ -9,6 +9,7 @@ import { redirect } from "next/navigation";
 import React from "react";
 
 import ServerHeader from "./serverId/server-header";
+import Channels from "./serverId/channels";
 
 interface ServerIdChannelsListProps {
   serverId: string;
@@ -87,6 +88,7 @@ const ServerIdChannelsList: React.FC<ServerIdChannelsListProps> = async ({
   return (
     <div className="flex flex-col h-full w-full dark:bg-[#1e242d] bg-gray-100">
       <ServerHeader server={server} role={role} />
+      <Channels channels={server.channels} />
     </div>
   );
 };

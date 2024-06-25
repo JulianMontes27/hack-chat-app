@@ -86,7 +86,10 @@ const ServerHeader: React.FC<ServerHeaderProps> = ({ server, role }) => {
           </DropdownMenuItem>
         )}
         {isMod && (
-          <DropdownMenuItem className=" cursor-pointer flex flex-row justify-between">
+          <DropdownMenuItem
+            className=" cursor-pointer flex flex-row justify-between"
+            onClick={() => onOpen("create-channel", { server })}
+          >
             Create channel
             <span className="font-bold text-indigo-400">(MOD)</span>
             <PlusCircleIcon />
@@ -94,13 +97,19 @@ const ServerHeader: React.FC<ServerHeaderProps> = ({ server, role }) => {
         )}
         {isMod && <DropdownMenuSeparator />}
         {isAdmin && (
-          <DropdownMenuItem className=" cursor-pointer flex flex-row justify-between text-red-500">
+          <DropdownMenuItem
+            className=" cursor-pointer flex flex-row justify-between text-red-500"
+            onClick={() => onOpen("delete-server", { server })}
+          >
             Delete server
             <Trash2 />
           </DropdownMenuItem>
         )}
         {!isAdmin && (
-          <DropdownMenuItem className=" cursor-pointer flex flex-row justify-between ">
+          <DropdownMenuItem
+            className=" cursor-pointer flex flex-row justify-between"
+            onClick={() => onOpen("leave-server", { server })}
+          >
             Leave server
             <LucideAirVent />
           </DropdownMenuItem>

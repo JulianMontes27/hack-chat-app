@@ -7,7 +7,10 @@ export type ModalType =
   | "create-server"
   | "invite-member"
   | "edit-server"
-  | "manage-members";
+  | "manage-members"
+  | "create-channel"
+  | "leave-server"
+  | "delete-server";
 
 //items to send in a modal
 interface ModalData {

@@ -1,8 +1,11 @@
 "use client";
 
+import CreateChannelModal from "@/components/modals/create-channel/create-channel-modal";
 import CreateServerModal from "@/components/modals/create-server/create-server-modal";
+import DeleteServerModal from "@/components/modals/delete-server/delete-server";
 import EditServerModal from "@/components/modals/edit-server/edit-server-modal";
 import InviteModal from "@/components/modals/invite/invite-member-modal";
+import LeaveServerModal from "@/components/modals/leave-server/leave-server";
 import ManageMembersModal from "@/components/modals/manage-members/manage-members-modal";
 
 import { useEffect, useState } from "react";
@@ -22,6 +25,9 @@ export const ModalProvider = () => {
       <CreateServerModal />
       <InviteModal />
       <EditServerModal />
+      <CreateChannelModal />
+      <LeaveServerModal />
+      <DeleteServerModal />
     </>
   );
 };

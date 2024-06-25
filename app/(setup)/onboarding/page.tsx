@@ -32,6 +32,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { ArrowUpRight, SquareArrowOutUpRight } from "lucide-react";
+
+import { cn } from "@/lib/utils";
+
+import { useState } from "react";
+import { Label } from "@/components/ui/label";
 
 const CreateServerFormSchema = z.object({
   name: z.string().min(2, {
@@ -45,9 +51,14 @@ const CreateServerFormSchema = z.object({
 type CreateServerFormType = z.infer<typeof CreateServerFormSchema>;
 
 export default function CreateServerModal() {
+  const [inviteCode, setInviteCode] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const handleClick = () => {
+    setModalOpen((prev) => !prev);
+  };
+
   const router = useRouter();
 
-  // 1. Define your form.
   const form = useForm<CreateServerFormType>({
     resolver: zodResolver(CreateServerFormSchema),
     defaultValues: {
@@ -56,16 +67,13 @@ export default function CreateServerModal() {
     },
   });
 
-  // 2. Define a submit handler.
   async function onSubmit(values: CreateServerFormType) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
     try {
       //submit post form
       await axios.post(`/api/servers`, values);
       form.reset();
-      router.refresh();
       router.push("/");
+      router.refresh();
       toast.success("Created succesfully.");
     } catch (error) {
       toast.error(`[POST]: ${error}`, {
@@ -74,15 +82,25 @@ export default function CreateServerModal() {
     }
   }
 
+  const inviteCodeSubmit = (event: any) => {
+    event.preventDefault();
+    router.push(inviteCode);
+  };
+
   return (
-    <div className="h-full w-full flex items-center justify-center">
+    <div className="h-full w-full flex flex-col items-center justify-center">
       <Dialog>
         <div className="max-w-xl flex">
           <DialogHeader className="py-3 px-3">
-            <DialogTitle className="font-bold text-4xl mb-2">
+            <DialogTitle className="font-bold text-4xl mb-2 ">
               Create your first
               <DialogTrigger>
-                <span className="inline-block bg-gradient-to-r from-blue-600 via-green-500 to-indigo-400 text-transparent bg-clip-text text-[40px] mx-2">
+                <span
+                  className={cn(
+                    "inline-block bg-gradient-to-r from-rose-100 via-rose-400 to-rose-500 text-transparent bg-clip-text text-[40px] mx-2 ml-8 focus-visible:ring-0 focus-visible:ring-offset-0",
+                    !modalOpen && "animate-pulse-big-small"
+                  )}
+                >
                   Dev-server!
                 </span>
               </DialogTrigger>
@@ -97,9 +115,12 @@ export default function CreateServerModal() {
           </DialogHeader>
         </div>
 
-        <DialogContent className="bg-white text-black sm:max-w-[425px] overflow-hidden rounded-md">
+        <DialogContent
+          className="bg-white text-black sm:max-w-[425px] overflow-hidden rounded-md"
+          onOpenAutoFocus={(e) => e.preventDefault()}
+        >
           <DialogHeader className="py-3 px-3">
-            <DialogTitle className="font-bold text-2xl mb-2">
+            <DialogTitle className="font-bold text-2xl mb-2 ">
               Create server
             </DialogTitle>
             <DialogDescription className="flex flex-col w-full items-star gap-2">
@@ -168,6 +189,48 @@ export default function CreateServerModal() {
           </Form>
         </DialogContent>
       </Dialog>
+      <div className="mt-4">
+        <Dialog open={modalOpen} onOpenChange={handleClick}>
+          <div className="max-w-xl flex">
+            <DialogHeader className="py-3 px-3">
+              <DialogTrigger className="text-lg flex flex-row gap-2 focus-visible:ring-0 focus-visible:ring-offset-0">
+                Or... join a server with an{" "}
+                <span className="text-rose-500">invite-code!</span>
+                <ArrowUpRight />
+              </DialogTrigger>
+            </DialogHeader>
+          </div>
+          <DialogContent className="bg-white text-black sm:max-w-[425px] overflow-hidden rounded-md">
+            <DialogHeader className="py-3 px-3">
+              <DialogTitle className="font-bold text-2xl mb-2">
+                Join server
+              </DialogTitle>
+              <DialogDescription className="flex flex-col w-full items-star gap-2">
+                <span className="text-[16px] font-semibold ">
+                  Get ready to hack with your peers!
+                </span>
+              </DialogDescription>
+            </DialogHeader>
+            <div>
+              <form onSubmit={inviteCodeSubmit}>
+                <Label className="text-xs font-bold text-zinc-500 dark:text-secondary/70">
+                  SERVER INVITE CODE
+                </Label>
+                <div className="flex flex-row items-center gap-3">
+                  <Input
+                    className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0 overflow-x-auto whitespace-nowrap"
+                    value={inviteCode}
+                    onChange={(e) => setInviteCode(e.target.value)}
+                  />
+                  <button type="submit">
+                    <SquareArrowOutUpRight />
+                  </button>
+                </div>
+              </form>
+            </div>
+          </DialogContent>
+        </Dialog>
+      </div>
     </div>
   );
 }

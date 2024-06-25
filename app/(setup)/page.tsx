@@ -13,9 +13,10 @@ const SetupPage = async () => {
   //if there is a User logged in, check if there is a profile linked to it
   let profile = await prismadb.profile.findUnique({
     where: {
-      userId: user.id,
+      userId: user?.id,
     },
   });
+
   //if there is no profile linked to the currently signed in User...
   if (!profile) {
     //create profile

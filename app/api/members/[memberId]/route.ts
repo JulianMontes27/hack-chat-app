@@ -1,7 +1,6 @@
 import { currentProfile } from "@/lib/current-profile";
 import prismadb from "@/lib/prismadb";
-import { profile } from "console";
-import next from "next";
+
 import { NextRequest, NextResponse } from "next/server";
 
 export async function PATCH(
@@ -114,6 +113,6 @@ export async function DELETE(
 
     return NextResponse.json(server);
   } catch (error) {
-    console.log("[MEMBER_ID_DELETE]", error);
+    return new NextResponse("[MEMBER_ID_DELETE]: Internal error.");
   }
 }

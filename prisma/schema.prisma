@@ -87,7 +87,7 @@ model Channel{
   name String
 
   serverId String
-  server Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
+  server Server @relation(fields: [serverId], references: [id], onDelete: Cascade) //if server is deleted, then delete all channels within
 
   profileId String
   profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
