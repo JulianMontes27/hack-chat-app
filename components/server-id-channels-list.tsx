@@ -1,7 +1,7 @@
 import { currentProfile } from "@/lib/current-profile";
 import prismadb from "@/lib/prismadb";
 
-import { ChannelType } from "@prisma/client";
+import { ChannelType, MemberRole } from "@prisma/client";
 import { Prisma } from "@prisma/client";
 
 import { redirect } from "next/navigation";
@@ -10,6 +10,7 @@ import React from "react";
 
 import ServerHeader from "./serverId/server-header";
 import Channels from "./serverId/channels";
+import { Mic, ShieldCheckIcon, Text, User, Video } from "lucide-react";
 
 interface ServerIdChannelsListProps {
   serverId: string;
@@ -85,10 +86,54 @@ const ServerIdChannelsList: React.FC<ServerIdChannelsListProps> = async ({
     (member) => member.profileId === profile?.id
   )?.role;
 
+  const data = [
+    {
+      label: "Text",
+      type: "channel",
+      data: textChannels.map((channel) => ({
+        icon: <Text className="mr-2 h-4 w-4" />,
+        name: channel.name,
+        id: channel.id,
+      })),
+    },
+    {
+      label: "Audio",
+      type: "channel",
+      data: audioChannels.map((channel) => ({
+        icon: <Mic className="mr-2 h-4 w-4" />,
+        name: channel.name,
+        id: channel.id,
+      })),
+    },
+    {
+      label: "Video",
+      type: "channel",
+      data: videoChannels.map((channel) => ({
+        icon: <Video className="mr-2 h-4 w-4" />,
+        name: channel.name,
+        id: channel.id,
+      })),
+    },
+    {
+      label: "Members",
+      type: "member",
+      data: members.map((member) => ({
+        icon:
+          member.role === "GUEST" ? (
+            <User className="mr-2 h-4 w-4" />
+          ) : (
+            <ShieldCheckIcon className="mr-2 h-4 w-4 text-rose-400" />
+          ),
+        name: member.profile.name,
+        id: member.id,
+      })),
+    },
+  ];
+
   return (
     <div className="flex flex-col h-full w-full dark:bg-[#1e242d] bg-gray-100">
       <ServerHeader server={server} role={role} />
-      <Channels channels={server.channels} />
+      <Channels data={data} />
     </div>
   );
 };

@@ -79,13 +79,12 @@ export default function CreateChannelModal() {
       form.reset();
       router.refresh();
       toast.success("Channel created");
+
       onClose();
     } catch (error) {
       toast.error("An error ocurred creating channel.");
     }
   }
-
-  const { server } = data as { server: ServerWithMembersAndProfiles };
 
   return (
     <Dialog
@@ -94,12 +93,10 @@ export default function CreateChannelModal() {
     >
       <DialogContent className="bg-white text-black sm:max-w-[425px] overflow-hidden rounded-md">
         <DialogHeader className="py-3 px-3">
-          <DialogTitle className="font-bold text-2xl mb-2">
-            Manage members
+          <DialogTitle className="font-bold text-2xl">
+            Create channel
           </DialogTitle>
-          <DialogDescription className="flex flex-col w-full items-star gap-2 text-[16px] font-semibold ">
-            <span>Create channel</span>
-          </DialogDescription>
+          <DialogDescription className="flex flex-col w-full items-star gap-2 text-[16px] font-semibold "></DialogDescription>
         </DialogHeader>
         <div>
           <Form {...form}>
@@ -156,9 +153,13 @@ export default function CreateChannelModal() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full">
+              <button
+                type="submit"
+                className="w-full transform transition-transform duration-300 ease-in-out hover:scale-105 px-4 py-2 text-white rounded bg-blue-900"
+                disabled={form.formState.isSubmitting}
+              >
                 Submit
-              </Button>
+              </button>
             </form>
           </Form>
         </div>

@@ -18,6 +18,14 @@ const config = {
       },
     },
     extend: {
+      boxShadow: {
+        "red-md":
+          "0 8px 10px -5px rgba(255, 0, 0, 0.2), 0 5px 5px -3px rgba(255, 0, 0, 0.1)",
+        "red-lg":
+          "0 20px 25px -5px rgba(255, 0, 0, 0.2), 0 10px 10px -5px rgba(255, 0, 0, 0.1)",
+        "red-xl":
+          "0 30px 35px -7px rgba(255, 0, 0, 0.2), 0 15px 15px -7px rgba(255, 0, 0, 0.1)",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

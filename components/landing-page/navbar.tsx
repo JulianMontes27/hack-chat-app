@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 
 import { cn } from "@/lib/utils";
 import NavbarDropdownMenu from "./nav-dropdown";
+import { Button } from "../ui/button";
 
 const Navbar = () => {
   const [scroll, setScroll] = useState(false);
@@ -83,13 +84,9 @@ const Navbar = () => {
             </nav>
           </div>
           <div className="flex flex-row gap-5 items-center">
-            <div className="flex items-center gap-4">
-              <div className="sm:flex sm:gap-4">
-                <div className="inline-block  bg-pink-600 text-center  text-sm font-medium text-white transition-all hover:bg-pink-500 focus:outline-none focus:ring focus:ring-yellow-400 px-4 py-2 rounded-sm w-[100px] text">
-                  <SignInButton />
-                </div>
-              </div>
-            </div>
+            <button className="transition-shadow duration-300 ease-in-out shadow-red-md hover:shadow-red-xl px-4 py-2 bg-white text-black rounded">
+              <SignInButton />
+            </button>
             <div className="md:hidden ">
               <NavbarDropdownMenu routes={routes} />
             </div>

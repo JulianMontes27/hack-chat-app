@@ -1,13 +1,27 @@
 import React from "react";
 
-import { Channel } from "@prisma/client";
+import { SearchCommand } from "./search-command";
 
 interface ChannelsProps {
-  channels: Channel[];
+  data: {
+    label: string;
+    type: string;
+    data:
+      | {
+          icon: React.ReactNode;
+          name: string | null;
+          id: string;
+        }[]
+      | undefined;
+  }[];
 }
 
-const Channels: React.FC<ChannelsProps> = ({ channels }) => {
-  return <div>{channels.length}</div>;
+const Channels: React.FC<ChannelsProps> = ({ data }) => {
+  return (
+    <div>
+      <SearchCommand data={data} />
+    </div>
+  );
 };
 
 export default Channels;
