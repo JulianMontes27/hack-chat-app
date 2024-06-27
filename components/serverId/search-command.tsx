@@ -1,5 +1,7 @@
 "use client";
 
+import { useRouter, useParams } from "next/navigation";
+
 import * as React from "react";
 
 import {
@@ -15,7 +17,7 @@ import { Search } from "lucide-react";
 interface SearchCommandProps {
   data: {
     label: string;
-    type: string;
+    type: "channel"| "member";
     data:
       | {
           icon: React.ReactNode;
@@ -28,6 +30,8 @@ interface SearchCommandProps {
 
 export const SearchCommand: React.FC<SearchCommandProps> = ({ data }) => {
   const [open, setOpen] = React.useState(false);
+  const router = useRouter();
+  const params = useParams();
 
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -38,8 +42,28 @@ export const SearchCommand: React.FC<SearchCommandProps> = ({ data }) => {
     };
 
     document.addEventListener("keydown", down);
+    //on un-mount remove the event listener
     return () => document.removeEventListener("keydown", down);
   }, []);
+
+  const handleClick = ({
+    id,
+    type,
+  }: {
+    id: string;
+    type: "channel" | "member";
+  }) => {
+    setOpen(false);
+
+    if (type === "member") {
+      //redirect to the conversion page
+      return router.push(`/servers/${params.serverId}/chats/${id}`);
+    }
+    if (type === "channel") {
+      //redirect to the conversion page
+      return router.push(`/servers/${params.serverId}/channels/${id}`);
+    }
+  };
 
   return (
     <>
@@ -58,13 +82,18 @@ export const SearchCommand: React.FC<SearchCommandProps> = ({ data }) => {
       <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandInput placeholder="Search channels, members, ..." />
         <CommandList>
-          {data.map((group) =>
-            group.data && group.data.length >= 1 ? (
-              <CommandGroup key={group.label} heading={group.label}>
-                {group.data?.map((item) => (
-                  <CommandItem>
-                    {item.icon}
-                    {item.name}
+          {data.map(({ label, type, data }) =>
+            data && data.length >= 1 ? (
+              <CommandGroup key={label} heading={label}>
+                {data?.map(({ name, icon, id }) => (
+                  <CommandItem key={id} className="cursor-pointer">
+                    <h1
+                      onClick={() => handleClick({ id, type })}
+                      className="flex flex-row gap-2"
+                    >
+                      {icon}
+                      {name}
+                    </h1>
                   </CommandItem>
                 ))}
               </CommandGroup>

@@ -1,11 +1,12 @@
 import React from "react";
 
 import { SearchCommand } from "./search-command";
+import { Separator } from "../ui/separator";
 
 interface ChannelsProps {
   data: {
     label: string;
-    type: string;
+    type: "channel" | "member";
     data:
       | {
           icon: React.ReactNode;
@@ -20,6 +21,7 @@ const Channels: React.FC<ChannelsProps> = ({ data }) => {
   return (
     <div>
       <SearchCommand data={data} />
+      <Separator />
     </div>
   );
 };

@@ -17,8 +17,8 @@ interface ActionsTooltipProps {
 const ActionsTooltip: React.FC<ActionsTooltipProps> = ({
   children,
   label,
-  side,
-  align,
+  side = "right",
+  align = "start",
 }) => {
   return (
     <TooltipProvider>

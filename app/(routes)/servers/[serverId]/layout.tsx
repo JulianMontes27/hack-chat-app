@@ -1,6 +1,6 @@
 import React from "react";
 
-import ServerIdChannelsList from "@/components/server-id-channels-list";
+import ServerIdChannelsList from "@/components/serverId/server-id-channels-list";
 
 import { currentProfile } from "@/lib/current-profile";
 import { auth } from "@clerk/nextjs/server";

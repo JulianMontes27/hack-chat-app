@@ -3,7 +3,7 @@
 import { MemberRole } from "@prisma/client";
 
 import React from "react";
-import { ServerWithMembersAndProfiles } from "../server-id-channels-list";
+import { ServerWithMembersAndProfiles } from "./server-id-channels-list";
 
 import {
   DropdownMenuContent,
@@ -23,7 +23,6 @@ import {
   Users,
 } from "lucide-react";
 import useModalStore from "@/hooks/use-modal-store";
-import { Separator } from "../ui/separator";
 
 interface ServerHeaderProps {
   server: ServerWithMembersAndProfiles;

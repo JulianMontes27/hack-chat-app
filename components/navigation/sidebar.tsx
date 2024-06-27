@@ -2,7 +2,6 @@ import { currentProfile } from "@/lib/current-profile";
 import prismadb from "@/lib/prismadb";
 
 import SidebarAction from "./sidebar-action";
-import { Plus } from "lucide-react";
 import { Separator } from "../ui/separator";
 import { ScrollArea } from "../ui/scroll-area";
 import NavItem from "./nav-item";

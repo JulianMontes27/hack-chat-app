@@ -7,6 +7,7 @@ import LandingPage from "@/components/landing-page/public-landing-page";
 
 const SetupPage = async () => {
   const user = await currentUser();
+  //if the client browser has no user (logged in) cookie...
   if (!user) {
     return <LandingPage />;
   }

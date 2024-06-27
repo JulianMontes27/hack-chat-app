@@ -1,19 +1,33 @@
 import { currentProfile } from "@/lib/current-profile";
 import prismadb from "@/lib/prismadb";
 
-import { ChannelType, MemberRole } from "@prisma/client";
+import { ChannelType } from "@prisma/client";
 import { Prisma } from "@prisma/client";
 
 import { redirect } from "next/navigation";
 
 import React from "react";
 
-import ServerHeader from "./serverId/server-header";
-import Channels from "./serverId/channels";
+import ServerHeader from "./server-header";
+import Channels from "./channels";
 import { Mic, ShieldCheckIcon, Text, User, Video } from "lucide-react";
+import ServerSection from "./server-section";
+import ServerChannel from "./server-channel";
 
 interface ServerIdChannelsListProps {
   serverId: string;
+}
+
+interface ChannelsProps {
+  label: string;
+  type: "channel" | "member";
+  data:
+    | {
+        icon: React.ReactNode;
+        name: string | null;
+        id: string;
+      }[]
+    | undefined;
 }
 
 export type ServerWithMembersAndProfiles = Prisma.ServerGetPayload<{
@@ -67,6 +81,11 @@ const ServerIdChannelsList: React.FC<ServerIdChannelsListProps> = async ({
     redirect("/");
   }
 
+  //find the ROLE of the current profile in the server
+  const role = server?.members.find(
+    (member) => member.profileId === profile?.id
+  )?.role;
+
   //separate channels by their type
   const textChannels = server?.channels.filter(
     (channel) => channel.type === ChannelType.TEXT
@@ -81,12 +100,8 @@ const ServerIdChannelsList: React.FC<ServerIdChannelsListProps> = async ({
   const members = server?.members.filter(
     (member) => member.profileId !== profile?.id
   );
-  //find the ROLE of the current profile in the server
-  const role = server?.members.find(
-    (member) => member.profileId === profile?.id
-  )?.role;
 
-  const data = [
+  const data: ChannelsProps[] = [
     {
       label: "Text",
       type: "channel",
@@ -134,6 +149,76 @@ const ServerIdChannelsList: React.FC<ServerIdChannelsListProps> = async ({
     <div className="flex flex-col h-full w-full dark:bg-[#1e242d] bg-gray-100">
       <ServerHeader server={server} role={role} />
       <Channels data={data} />
+      {/* //text channels */}
+      <section className="flex flex-col gap-4 p-2">
+        <div>
+          {!!textChannels.length && (
+            <div>
+              <ServerSection
+                channelType={ChannelType.TEXT}
+                sectionType={"channels"}
+                role={role}
+                label={"Text Channels"}
+              />
+              {/* //map text channels */}
+              {textChannels.map((channel) => (
+                <ServerChannel channel={channel} server={server} role={role} />
+              ))}
+            </div>
+          )}
+        </div>
+        {/* //uadio channels */}
+        <div>
+          {!!audioChannels.length && (
+            <div>
+              <ServerSection
+                channelType={ChannelType.AUDIO}
+                sectionType={"channels"}
+                role={role}
+                label={"Audio Channels"}
+              />
+              {/* //map text channels */}
+              {audioChannels.map((channel) => (
+                <ServerChannel channel={channel} role={role} />
+              ))}
+            </div>
+          )}
+        </div>
+        {/* //uadio channels */}
+        <div>
+          {!!videoChannels.length && (
+            <div>
+              <ServerSection
+                channelType={ChannelType.AUDIO}
+                sectionType={"channels"}
+                role={role}
+                label={"Video Channels"}
+              />
+              {/* //map text channels */}
+              {videoChannels.map((channel) => (
+                <ServerChannel channel={channel} role={role} />
+              ))}
+            </div>
+          )}
+        </div>
+        {/* //uadio channels */}
+        <div>
+          {!!members.length && (
+            <div>
+              <ServerSection
+                channelType={ChannelType.AUDIO}
+                sectionType={"members"}
+                role={role}
+                label={"Members"}
+              />
+              {/* //map text channels */}
+              {videoChannels.map((channel) => (
+                <ServerChannel channel={channel} server={server} role={role} />
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
     </div>
   );
 };

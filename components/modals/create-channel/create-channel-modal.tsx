@@ -116,7 +116,7 @@ export default function CreateChannelModal() {
                       />
                     </FormControl>
                     <FormDescription>
-                      This is the channel's public display name.
+                      This is the channel&apos;s public display name.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
