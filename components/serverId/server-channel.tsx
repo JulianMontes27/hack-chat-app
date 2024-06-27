@@ -14,11 +14,7 @@ interface ServerChannelProps {
   role?: MemberRole;
 }
 
-const ServerChannel: React.FC<ServerChannelProps> = ({
-  channel,
-  server,
-  role,
-}) => {
+const ServerChannel: React.FC<ServerChannelProps> = ({ channel, role }) => {
   const params = useParams();
 
   const ICON_MAP = {
@@ -31,7 +27,7 @@ const ServerChannel: React.FC<ServerChannelProps> = ({
     <button
       onClick={() => {}}
       className={cn(
-        "group px-2 py-2 rounded-md flex items-center gap-x-2 w-full hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition mb-1 flex-row justify-between p-4",
+        "group  rounded-md flex items-center w-full hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition mb-1 flex-row justify-between p-2",
         params?.channelId === channel.id && "bg-zinc-700/20"
       )}
     >

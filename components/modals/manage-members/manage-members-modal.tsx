@@ -29,7 +29,7 @@ import {
 
 import UserAvatar from "./user-avatar";
 
-import { ServerWithMembersAndProfiles } from "@/components/server-id-channels-list";
+import { ServerWithMembersAndProfiles } from "@/components/serverId/server-id-channels-list";
 import {
   Check,
   GavelIcon,

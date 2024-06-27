@@ -9,6 +9,11 @@ const config = {
     "./src/**/*.{ts,tsx}",
   ],
   prefix: "",
+  variants: {
+    extend: {
+      boxShadow: ["hover"], // Ensure hover variants are enabled for box shadow
+    },
+  },
   theme: {
     container: {
       center: true,

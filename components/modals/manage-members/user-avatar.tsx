@@ -15,7 +15,7 @@ const UserAvatar: React.FC<UserAvatarProps> = ({ src, className }) => {
     <div>
       {" "}
       <Avatar className={cn("h-7 w-7 md:h-10 md:w-10 ", className)}>
-        <AvatarImage src={src} alt="@shadcn" />
+        <AvatarImage src={src} alt={src} />
         <AvatarFallback>CN</AvatarFallback>
       </Avatar>
     </div>

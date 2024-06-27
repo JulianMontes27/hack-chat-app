@@ -8,7 +8,6 @@ import axios from "axios";
 import qs from "query-string";
 
 import useModalStore from "@/hooks/use-modal-store";
-import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 
 import {
@@ -18,7 +17,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -39,10 +37,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { ServerWithMembersAndProfiles } from "@/components/server-id-channels-list";
-
 import toast from "react-hot-toast";
 import { ChannelType } from "@prisma/client";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   channel_name: z
@@ -56,7 +53,7 @@ const formSchema = z.object({
 });
 
 export default function CreateChannelModal() {
-  const { isOpen, onClose, modalType, data, onOpen } = useModalStore();
+  const { isOpen, onClose, modalType, data } = useModalStore();
   const router = useRouter();
   const params = useParams();
 
@@ -64,9 +61,16 @@ export default function CreateChannelModal() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       channel_name: "",
-      channel_type: ChannelType.TEXT, //the default channel type is 'Text'
+      channel_type: data.channelType || ChannelType.TEXT, //the default channel type is 'Text'
     },
   });
+  useEffect(() => {
+    if (data.channelType) {
+      form.setValue("channel_type", data.channelType);
+    } else {
+      form.setValue("channel_type", ChannelType.TEXT);
+    }
+  }, [data.channelType, form]);
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       const url = qs.stringifyUrl({
@@ -75,7 +79,7 @@ export default function CreateChannelModal() {
           serverId: params.serverId,
         },
       });
-      const res = await axios.post(url, values);
+      await axios.post(url, values);
       form.reset();
       router.refresh();
       toast.success("Channel created");
@@ -96,7 +100,6 @@ export default function CreateChannelModal() {
           <DialogTitle className="font-bold text-2xl">
             Create channel
           </DialogTitle>
-          <DialogDescription className="flex flex-col w-full items-star gap-2 text-[16px] font-semibold "></DialogDescription>
         </DialogHeader>
         <div>
           <Form {...form}>
@@ -110,7 +113,7 @@ export default function CreateChannelModal() {
                     <FormControl>
                       <Input
                         className="bg-white focus:ring-0 text-black "
-                        placeholder="Q&A"
+                        placeholder={data.channelType?.toLocaleLowerCase()}
                         {...field}
                         disabled={form.formState.isSubmitting}
                       />

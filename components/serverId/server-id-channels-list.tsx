@@ -13,6 +13,7 @@ import Channels from "./channels";
 import { Mic, ShieldCheckIcon, Text, User, Video } from "lucide-react";
 import ServerSection from "./server-section";
 import ServerChannel from "./server-channel";
+import ServerMember from "./server-member";
 
 interface ServerIdChannelsListProps {
   serverId: string;
@@ -159,10 +160,16 @@ const ServerIdChannelsList: React.FC<ServerIdChannelsListProps> = async ({
                 sectionType={"channels"}
                 role={role}
                 label={"Text Channels"}
+                server={server}
               />
               {/* //map text channels */}
               {textChannels.map((channel) => (
-                <ServerChannel channel={channel} server={server} role={role} />
+                <ServerChannel
+                  channel={channel}
+                  server={server}
+                  role={role}
+                  key={channel.id}
+                />
               ))}
             </div>
           )}
@@ -176,10 +183,11 @@ const ServerIdChannelsList: React.FC<ServerIdChannelsListProps> = async ({
                 sectionType={"channels"}
                 role={role}
                 label={"Audio Channels"}
+                server={server}
               />
               {/* //map text channels */}
               {audioChannels.map((channel) => (
-                <ServerChannel channel={channel} role={role} />
+                <ServerChannel channel={channel} role={role} key={channel.id} />
               ))}
             </div>
           )}
@@ -189,14 +197,15 @@ const ServerIdChannelsList: React.FC<ServerIdChannelsListProps> = async ({
           {!!videoChannels.length && (
             <div>
               <ServerSection
-                channelType={ChannelType.AUDIO}
+                server={server}
+                channelType={ChannelType.VIDEO}
                 sectionType={"channels"}
                 role={role}
                 label={"Video Channels"}
               />
               {/* //map text channels */}
               {videoChannels.map((channel) => (
-                <ServerChannel channel={channel} role={role} />
+                <ServerChannel channel={channel} role={role} key={channel.id} />
               ))}
             </div>
           )}
@@ -206,14 +215,15 @@ const ServerIdChannelsList: React.FC<ServerIdChannelsListProps> = async ({
           {!!members.length && (
             <div>
               <ServerSection
+                server={server}
                 channelType={ChannelType.AUDIO}
                 sectionType={"members"}
                 role={role}
                 label={"Members"}
               />
               {/* //map text channels */}
-              {videoChannels.map((channel) => (
-                <ServerChannel channel={channel} server={server} role={role} />
+              {members.map((member) => (
+                <ServerMember key={member.id} member={member} server={server} />
               ))}
             </div>
           )}

@@ -1,5 +1,5 @@
 //contorl all modals in app
-import { Server } from "@prisma/client";
+import { ChannelType, Server } from "@prisma/client";
 import { create } from "zustand";
 
 //type definition
@@ -15,6 +15,7 @@ export type ModalType =
 //items to send in a modal
 interface ModalData {
   server?: Server;
+  channelType?: ChannelType;
 }
 
 interface ModalStore {
@@ -29,6 +30,7 @@ const useModalStore = create<ModalStore>((set, get) => ({
   modalType: null,
   data: {},
   isOpen: false,
+  channelType: ChannelType.TEXT,
   onOpen: (type, data = {}) => {
     set({ isOpen: true, modalType: type, data });
     console.log("State after opening modal:", get());

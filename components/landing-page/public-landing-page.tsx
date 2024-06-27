@@ -6,7 +6,7 @@ import Hero from "./hero";
 
 const LandingPage = () => {
   return (
-    <main className="">
+    <main>
       <Navbar />
       <Hero />
       <Footer />
