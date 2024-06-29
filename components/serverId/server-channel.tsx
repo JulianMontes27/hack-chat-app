@@ -7,6 +7,7 @@ import { useParams } from "next/navigation";
 import React from "react";
 
 import ActionsTooltip from "../tootltip";
+import useModalStore from "@/hooks/use-modal-store";
 
 interface ServerChannelProps {
   channel: Channel;
@@ -14,7 +15,12 @@ interface ServerChannelProps {
   role?: MemberRole;
 }
 
-const ServerChannel: React.FC<ServerChannelProps> = ({ channel, role }) => {
+const ServerChannel: React.FC<ServerChannelProps> = ({
+  channel,
+  role,
+  server,
+}) => {
+  const { onOpen } = useModalStore();
   const params = useParams();
 
   const ICON_MAP = {
@@ -42,11 +48,17 @@ const ServerChannel: React.FC<ServerChannelProps> = ({ channel, role }) => {
       </h1>
       {channel.name !== "general" && role !== MemberRole.GUEST && (
         <div className="flex flex-row gap-3">
-          <ActionsTooltip label={"Edit channel"} side="bottom">
-            <Edit className="text-zinc-100/75 group-hover:text-black h-5 w-5 hidden group-hover:block  dark:group-hover:text-white/75 transform hover:scale-125 transition-transform duration-300" />
+          <ActionsTooltip label={"Edit"} side="bottom">
+            <Edit
+              className="text-zinc-100/75 group-hover:text-black h-5 w-5 hidden group-hover:block  dark:group-hover:text-white/75 transform hover:scale-125 transition-transform duration-300"
+              onClick={() => onOpen("edit-channel", { server, channel })}
+            />
           </ActionsTooltip>
-          <ActionsTooltip label={"Delete channel"} side="bottom">
-            <Trash className="text-zinc-100/75 group-hover:text-black h-5 w-5 hidden group-hover:block  dark:group-hover:text-white/75 transform hover:scale-125 transition-transform duration-300" />
+          <ActionsTooltip label={"Delete"} side="bottom">
+            <Trash
+              className="text-zinc-100/75 group-hover:text-black h-5 w-5 hidden group-hover:block  dark:group-hover:text-white/75 transform hover:scale-125 transition-transform duration-300"
+              onClick={() => onOpen("delete-channel", { server, channel })}
+            />
           </ActionsTooltip>
         </div>
       )}
@@ -55,7 +67,7 @@ const ServerChannel: React.FC<ServerChannelProps> = ({ channel, role }) => {
           label={"'General' channel cant be modified."}
           side="bottom"
         >
-          <Lock className="mr-2 text-zinc-200 h-4 w-4" />
+          <Lock className="mr-2 dark:text-zinc-200 h-4 w-4" />
         </ActionsTooltip>
       )}
     </button>

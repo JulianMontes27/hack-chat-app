@@ -15,11 +15,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 
 import { useRouter } from "next/navigation";
 
-export default function DeleteServerModal() {
+import qs from "query-string";
+import { channel } from "diagnostics_channel";
+
+export default function DeletChannelModal() {
   const [isLoading, setIsLoading] = useState(false);
 
   const { isOpen, onClose, modalType, data } = useModalStore();
@@ -29,11 +31,18 @@ export default function DeleteServerModal() {
   const handleSubmit = async () => {
     try {
       setIsLoading(true);
-      const res = await axios.delete(`/api/servers/${data?.server?.id}`);
-      onClose();
-      router.push("/");
+      const url = qs.stringifyUrl({
+        url: "/api/channels",
+        query: {
+          channelId: data.channel?.id,
+          serverId: data.server?.id,
+        },
+      });
+      await axios.patch(url);
       router.refresh();
-      toast(`${data?.server?.id} was deleted.`);
+      toast.success(`${data.channel?.name} deleted.`);
+
+      onClose();
     } catch (error) {
       toast.error("Internal error.");
     } finally {
@@ -42,7 +51,7 @@ export default function DeleteServerModal() {
   };
   return (
     <Dialog
-      open={isOpen && modalType === "delete-server"}
+      open={isOpen && modalType === "delete-channel"}
       onOpenChange={onClose}
     >
       <DialogContent
@@ -51,13 +60,13 @@ export default function DeleteServerModal() {
       >
         <DialogHeader className="py-3 px-3">
           <DialogTitle className="font-bold text-2xl mb-2">
-            Delete server
+            Delete channel
           </DialogTitle>
           <DialogDescription className="flex flex-col w-full items-star gap-2">
             <span className="text-[16px] text-gray-600">
-              If you delete the{" "}
-              <span className="text-rose-400">
-                <strong>Server</strong>
+              If you delete
+              <span className="text-rose-400 ml-2">
+                <strong>{`#${data.channel?.name}`}</strong>
               </span>
               , there is no way to recuperate it. Are you sure you want to
               proceed?
@@ -73,7 +82,7 @@ export default function DeleteServerModal() {
             Cancel
           </button>
           <button
-            className="w-full transform transition-transform duration-300 ease-in-out hover:scale-110 px-4 py-2 text-white rounded bg-rose-600"
+            className="w-full transform transition-transform duration-300 ease-in-out hover:scale-110 px-4 py-2 text-white rounded bg-rose-600 "
             onClick={handleSubmit}
             disabled={isLoading}
           >

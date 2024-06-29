@@ -187,7 +187,12 @@ const ServerIdChannelsList: React.FC<ServerIdChannelsListProps> = async ({
               />
               {/* //map text channels */}
               {audioChannels.map((channel) => (
-                <ServerChannel channel={channel} role={role} key={channel.id} />
+                <ServerChannel
+                  channel={channel}
+                  role={role}
+                  key={channel.id}
+                  server={server}
+                />
               ))}
             </div>
           )}
@@ -205,7 +210,12 @@ const ServerIdChannelsList: React.FC<ServerIdChannelsListProps> = async ({
               />
               {/* //map text channels */}
               {videoChannels.map((channel) => (
-                <ServerChannel channel={channel} role={role} key={channel.id} />
+                <ServerChannel
+                  channel={channel}
+                  role={role}
+                  key={channel.id}
+                  server={server}
+                />
               ))}
             </div>
           )}

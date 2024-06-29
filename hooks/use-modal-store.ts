@@ -1,5 +1,5 @@
 //contorl all modals in app
-import { ChannelType, Server } from "@prisma/client";
+import { Channel, ChannelType, Server } from "@prisma/client";
 import { create } from "zustand";
 
 //type definition
@@ -10,12 +10,13 @@ export type ModalType =
   | "manage-members"
   | "create-channel"
   | "leave-server"
-  | "delete-server";
-
+  | "delete-server"
+  | "delete-channel"
+  | "edit-channel";
 //items to send in a modal
 interface ModalData {
   server?: Server;
-  channelType?: ChannelType;
+  channel?: Channel;
 }
 
 interface ModalStore {

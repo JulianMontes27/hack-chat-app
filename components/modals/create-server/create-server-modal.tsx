@@ -129,13 +129,12 @@ export default function CreateServerModal() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Name</FormLabel>
-
                     <FormControl>
                       <Input
                         disabled={form.formState.isSubmitting}
                         placeholder="react-native-devs"
-                        {...field}
                         className="bg-white"
+                        {...field}
                       />
                     </FormControl>
                     <FormDescription>

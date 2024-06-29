@@ -84,9 +84,9 @@ const Navbar = () => {
             </nav>
           </div>
           <div className="flex flex-row gap-5 items-center">
-            <button className="transition duration-300 ease-in-out transform hover:scale-110  hover:shadow-red-xl px-4 py-2 bg-white text-black rounded">
+            <div className="transition duration-300 ease-in-out transform hover:scale-110  hover:shadow-red-xl px-4 py-2 bg-white text-black rounded">
               <SignInButton />
-            </button>
+            </div>
             <div className="md:hidden ">
               <NavbarDropdownMenu routes={routes} />
             </div>
