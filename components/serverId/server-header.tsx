@@ -44,7 +44,7 @@ const ServerHeader: React.FC<ServerHeaderProps> = ({ server, role }) => {
       >
         <div className="flex flex-row border items-center">
           <button className="h-[48px] w-full text-md font-semibold flex items-center   ">
-            {server.name}
+            Server Actions
           </button>
           <ChevronDown className="h-5 w-5" />
         </div>

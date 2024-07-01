@@ -6,6 +6,9 @@ import { currentProfile } from "@/lib/current-profile";
 import { auth } from "@clerk/nextjs/server";
 import prismadb from "@/lib/prismadb";
 import { redirect } from "next/navigation";
+import { ModeToggle } from "@/components/providers/themes/toggle-theme";
+import { UserButton } from "@clerk/nextjs";
+import Link from "next/link";
 
 interface ServerIdLayoutProps {
   children: React.ReactNode;
@@ -44,7 +47,24 @@ const ServerIdLayout: React.FC<ServerIdLayoutProps> = async ({
       <div className="hidden md:flex h-full w-60 z-20 flex-col fixed inset-y-0">
         <ServerIdChannelsList serverId={server.id} />
       </div>
-      <div className="h-full md:pl-60">{children}</div>
+
+      <div className="h-full md:pl-60 flex flex-col ">
+        <div className="flex items-center justify-between gap-3 px-4 py-2">
+          <Link href={"/"}>{server.name}</Link>
+          <div className="flex flex-row items-center gap-4">
+            <ModeToggle />
+            <UserButton
+              afterSignOutUrl="/"
+              appearance={{
+                elements: {
+                  avatarBox: "h-[48px] w-[48px]",
+                },
+              }}
+            />
+          </div>
+        </div>
+        {children}
+      </div>
     </div>
   );
 };

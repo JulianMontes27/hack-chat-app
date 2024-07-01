@@ -3,7 +3,7 @@
 import { cn } from "@/lib/utils";
 import { Channel, ChannelType, MemberRole, Server } from "@prisma/client";
 import { Edit, Hash, Trash, Lock, Mic, Video } from "lucide-react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React from "react";
 
 import ActionsTooltip from "../tootltip";
@@ -22,6 +22,7 @@ const ServerChannel: React.FC<ServerChannelProps> = ({
 }) => {
   const { onOpen } = useModalStore();
   const params = useParams();
+  const router = useRouter();
 
   const ICON_MAP = {
     [ChannelType.AUDIO]: <Mic className="mr-2 h-6 w-6" />,
@@ -29,9 +30,13 @@ const ServerChannel: React.FC<ServerChannelProps> = ({
     [ChannelType.VIDEO]: <Video className="mr-2 h-6 w-6" />,
   };
 
+  const handleClick = () => {
+    router.push(`/servers/${server?.id}/channels/${channel.id}`);
+  };
+
   return (
     <button
-      onClick={() => {}}
+      onClick={handleClick}
       className={cn(
         "group  rounded-md flex items-center w-full hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition mb-1 flex-row justify-between p-2",
         params?.channelId === channel.id && "bg-zinc-700/20"
@@ -56,7 +61,7 @@ const ServerChannel: React.FC<ServerChannelProps> = ({
           </ActionsTooltip>
           <ActionsTooltip label={"Delete"} side="bottom">
             <Trash
-              className="text-zinc-100/75 group-hover:text-black h-5 w-5 hidden group-hover:block  dark:group-hover:text-white/75 transform hover:scale-125 transition-transform duration-300"
+              className="text-zinc-100/75 group-hover:text-rose-500 h-5 w-5 hidden group-hover:block  dark:group-hover:text-rose-200 transform hover:scale-125 transition-transform duration-300"
               onClick={() => onOpen("delete-channel", { server, channel })}
             />
           </ActionsTooltip>

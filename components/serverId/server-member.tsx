@@ -18,9 +18,13 @@ const ICON_MAP = {
   [MemberRole.MOD]: <User className="mr-2 h-5 w-5" />,
 };
 
-const ServerMember: React.FC<ServerMemberProps> = ({ member }) => {
+const ServerMember: React.FC<ServerMemberProps> = ({ member, server }) => {
   const router = useRouter();
   const params = useParams();
+
+  const handleClick = () => {
+    router.push(`/servers/${params?.serverId}/chat/`);
+  };
   return (
     <button
       className={cn(
