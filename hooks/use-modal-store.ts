@@ -23,6 +23,7 @@ interface ModalStore {
   modalType: ModalType | null;
   data: ModalData;
   isOpen: boolean;
+  channelType: ChannelType;
   onOpen: (type: ModalType, data?: ModalData) => void;
   onClose: () => void;
   logState: () => void;

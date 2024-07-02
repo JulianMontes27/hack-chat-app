@@ -43,21 +43,21 @@ const ServerIdLayout: React.FC<ServerIdLayoutProps> = async ({
   }
 
   return (
-    <div className="h-full">
+    <div className="">
       <div className="hidden md:flex h-full w-60 z-20 flex-col fixed inset-y-0">
         <ServerIdChannelsList serverId={server.id} />
       </div>
 
       <div className="h-full md:pl-60 flex-col ">
-        <div className="items-center justify-between gap-3 px-4 py-2 md:flex hidden ">
+        <div className="items-center justify-between gap-3 px-4 py-[4px] md:flex hidden border-b-2">
           <Link href={"/"}>{server.name}</Link>
-          <div className="flex flex-row items-center gap-4">
+          <div className="flex flex-row items-center gap-4 ">
             <ModeToggle />
             <UserButton
               afterSignOutUrl="/"
               appearance={{
                 elements: {
-                  avatarBox: "h-[48px] w-[48px]",
+                  avatarBox: "h-[40px] w-[40px]",
                 },
               }}
             />

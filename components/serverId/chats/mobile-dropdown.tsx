@@ -1,29 +1,21 @@
 import React from "react";
 
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
+import Sidebar from "@/components/navigation/sidebar";
+import ServerIdChannelsList from "../server-id-channels-list";
 
-const MobileDropdown = () => {
+const MobileDropdown = ({ serverId }: { serverId: string }) => {
   return (
     <Sheet>
       <SheetTrigger asChild>
         <Menu />
       </SheetTrigger>
       <SheetContent side={"left"} className="p-0 flex gap-0">
-        <SheetHeader>
-          <SheetTitle>Are you absolutely sure?</SheetTitle>
-          <SheetDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
-          </SheetDescription>
-        </SheetHeader>
+        <div className="w-[72px]">
+          <Sidebar />
+        </div>
+        <ServerIdChannelsList serverId={serverId} />
       </SheetContent>
     </Sheet>
   );
