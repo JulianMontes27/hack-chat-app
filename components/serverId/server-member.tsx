@@ -23,10 +23,11 @@ const ServerMember: React.FC<ServerMemberProps> = ({ member, server }) => {
   const params = useParams();
 
   const handleClick = () => {
-    router.push(`/servers/${params?.serverId}/chat/`);
+    router.push(`/servers/${params?.serverId}/chats/${member.id}`);
   };
   return (
     <button
+      onClick={handleClick}
       className={cn(
         "group rounded-md flex items-center gap-x-2 w-full hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition mb-1 flex-row justify-between p-1",
         params?.memberId === member.id && "bg-zinc-700/20"

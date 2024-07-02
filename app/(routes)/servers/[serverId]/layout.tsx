@@ -48,8 +48,8 @@ const ServerIdLayout: React.FC<ServerIdLayoutProps> = async ({
         <ServerIdChannelsList serverId={server.id} />
       </div>
 
-      <div className="h-full md:pl-60 flex flex-col ">
-        <div className="flex items-center justify-between gap-3 px-4 py-2">
+      <div className="h-full md:pl-60 flex-col ">
+        <div className="items-center justify-between gap-3 px-4 py-2 md:flex hidden ">
           <Link href={"/"}>{server.name}</Link>
           <div className="flex flex-row items-center gap-4">
             <ModeToggle />

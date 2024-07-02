@@ -17,7 +17,7 @@ import { Search } from "lucide-react";
 interface SearchCommandProps {
   data: {
     label: string;
-    type: "channel"| "member";
+    type: "channel" | "member";
     data:
       | {
           icon: React.ReactNode;
@@ -68,7 +68,7 @@ export const SearchCommand: React.FC<SearchCommandProps> = ({ data }) => {
   return (
     <>
       <div
-        className="text-sm text-muted-foreground m-3 flex items-center justify-between dark:hover:bg-gray-800 transition cursor-pointer bg-zinc-200/75 dark:bg-slate-800 p-2 rounded-lg hover:"
+        className="text-sm text-muted-foreground m-3 flex items-center justify-between   cursor-pointer bg-zinc-200/75 dark:bg-slate-800 rounded-lg transition duration-300 ease-in-out transform hover:scale-105  px-4 py-2 bg-white text-black"
         onClick={() => setOpen(true)}
       >
         <div className="flex flex-row items-center gap-3 bg-">
