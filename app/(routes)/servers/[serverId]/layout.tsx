@@ -43,14 +43,19 @@ const ServerIdLayout: React.FC<ServerIdLayoutProps> = async ({
   }
 
   return (
-    <div className="">
+    <div className="h-screen flex flex-col">
       <div className="hidden md:flex h-full w-60 z-20 flex-col fixed inset-y-0">
         <ServerIdChannelsList serverId={server.id} />
       </div>
 
-      <div className="h-full md:pl-60 flex-col ">
+      <div className="md:pl-60 flex-col h-full">
         <div className="items-center justify-between gap-3 px-4 py-[4px] md:flex hidden border-b-2">
-          <Link href={"/"}>{server.name}</Link>
+          <Link
+            href={"/"}
+            className="transition duration-300 ease-in-out transform hover:scale-110  hover:shadow-red-md px-4 py-2 text-black dark:text-white rounded bg-transparent uppercase"
+          >
+            {server.name}
+          </Link>
           <div className="flex flex-row items-center gap-4 ">
             <ModeToggle />
             <UserButton
@@ -63,7 +68,7 @@ const ServerIdLayout: React.FC<ServerIdLayoutProps> = async ({
             />
           </div>
         </div>
-        {children}
+        <div className="flex-grow mt-2">{children}</div>
       </div>
     </div>
   );
