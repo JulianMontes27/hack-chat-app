@@ -1,19 +1,63 @@
 import React from "react";
 
 import prismadb from "@/lib/prismadb";
+import { currentProfile } from "@/lib/current-profile";
+import { auth } from "@clerk/nextjs/server";
 
-const MembersChatPage = async ({
-  params,
-}: {
-  params: { memberId: string; serverId: string };
-}) => {
-  
-  const memberChatWith = await prismadb.server.findUnique({
+import { redirect } from "next/navigation";
+import { findOrCreateChat } from "@/lib/chat";
+import ChatHeader from "@/components/serverId/chats/chat-header";
+
+//this page shows the Chat instance that the currently signed-in user (or current profile) has with the Member clicked
+
+interface MemberChatPageProps {
+  params: { serverId: string; memberId: string };
+}
+
+const MemberChatPage: React.FC<MemberChatPageProps> = async ({ params }) => {
+  //get the currently signed-in member
+  const profile = await currentProfile();
+  if (!profile) return auth().redirectToSignIn();
+
+  //get the memberId of the currently signed-in user/profile
+  const member = await prismadb.member.findFirst({
     where: {
-      id: params.serverId,
+      profileId: profile.id,
+      serverId: params.serverId,
+    },
+    include: {
+      profile: true,
     },
   });
-  return <div>ChatPage</div>;
+
+  if (!member) return redirect("/");
+
+  const currentMemberId = member.id;
+
+  //search for an existing chat between both
+  const chat = await findOrCreateChat(currentMemberId, params.memberId);
+  if (!chat) return redirect(`/servers/${params.serverId}`); //automatically go to the general channel
+
+  // const keys = Object.keys(chat);
+  // console.log(keys);
+
+  const { memberOne, memberTwo } = chat;
+
+  const otherMember =
+    memberOne.profileId === profile.id ? memberTwo : memberOne;
+  //since we want to get the OTHER member, if the membeOne.id is the current profile.id, then the other member is memberTwo
+  if (!otherMember) return redirect(`/servers/${params.serverId}`);
+
+  return (
+    <div className="">
+      <ChatHeader
+        serverId={params.serverId}
+        name={otherMember.profile.name || `Anonymous Member`}
+        type={"chat"}
+        imageUrl={otherMember.profile.imgUrl}
+      />
+    </div>
+  );
 };
 
-export default MembersChatPage;
+export default MemberChatPage;

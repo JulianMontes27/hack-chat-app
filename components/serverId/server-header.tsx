@@ -40,13 +40,13 @@ const ServerHeader: React.FC<ServerHeaderProps> = ({ server, role }) => {
     <DropdownMenu>
       <DropdownMenuTrigger
         asChild
-        className="focus:outline-none px-5 dark:border-neutral-800  hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition"
+        className="focus:outline-none px-5 dark:border-neutral-800  hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition "
       >
-        <div className="flex flex-row border items-center">
-          <button className="h-[48px] w-full text-md font-semibold flex items-center   ">
+        <div className="group">
+          <button className="h-[48px] w-full text-md font-semibold flex flex-row md:justify-between items-center ">
             Server Actions
+            <ChevronDown className="h-5 w-5 hidden md:block group-hover:block transition ml-2 group-hover:" />
           </button>
-          <ChevronDown className="h-5 w-5" />
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 text-xs font-medium text-black dark:text-neutral-400 space-y-[2px]">

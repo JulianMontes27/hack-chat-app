@@ -13,6 +13,7 @@ const ServerChannelPage = async ({
 }: {
   params: { channelId: string; serverId: string };
 }) => {
+  //auth
   const profile = await currentProfile();
   if (!profile) return auth().redirectToSignIn();
 
