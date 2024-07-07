@@ -63,10 +63,7 @@ export default function CreateServerModal() {
 
   // 2. Define a submit handler.
   async function onSubmit(values: CreateServerFormType) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
     try {
-      //submit post form
       await axios.post(`/api/servers`, values);
       form.reset();
       router.refresh();
