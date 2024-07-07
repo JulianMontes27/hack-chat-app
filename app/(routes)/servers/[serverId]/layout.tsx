@@ -43,7 +43,7 @@ const ServerIdLayout: React.FC<ServerIdLayoutProps> = async ({
   }
 
   return (
-    <div className="h-screen flex flex-col">
+    <div className="flex flex-col h-screen">
       <div className="hidden md:flex h-full w-60 z-20 flex-col fixed inset-y-0">
         <ServerIdChannelsList serverId={server.id} />
       </div>
@@ -68,7 +68,7 @@ const ServerIdLayout: React.FC<ServerIdLayoutProps> = async ({
             />
           </div>
         </div>
-        <div className="flex-grow mt-2">{children}</div>
+        <div className="h-[90%] ">{children}</div>
       </div>
     </div>
   );

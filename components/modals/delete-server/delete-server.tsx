@@ -15,7 +15,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 
 import { useRouter } from "next/navigation";
 
@@ -29,10 +28,10 @@ export default function DeleteServerModal() {
   const handleSubmit = async () => {
     try {
       setIsLoading(true);
-      const res = await axios.delete(`/api/servers/${data?.server?.id}`);
-      onClose();
+      await axios.delete(`/api/servers/${data?.server?.id}`);
       router.push("/");
       router.refresh();
+      onClose();
       toast(`${data?.server?.id} was deleted.`);
     } catch (error) {
       toast.error("Internal error.");

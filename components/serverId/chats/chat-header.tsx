@@ -19,7 +19,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
   imageUrl,
 }) => {
   return (
-    <div className="text-md font-semibold px-3 flex items-center h-12 border-neutral-200 dark:border-neutral-800 justify-start gap-2.5">
+    <div className="text-md font-semibold px-3 flex items-center border-neutral-200 dark:border-neutral-800 justify-start gap-2.5">
       <div className="md:hidden">
         <MobileDropdown serverId={serverId} />
       </div>
@@ -29,8 +29,8 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
         )}
         {type === "chat" && imageUrl && <UserAvatar src={imageUrl} />}
         <h1>{name}</h1>
+        {type === "chat" && <SocketIndicator />}
       </div>
-      <SocketIndicator />
     </div>
   );
 };

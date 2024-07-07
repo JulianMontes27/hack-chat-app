@@ -32,7 +32,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
       process.env.NEXT_PUBLIC_SITE_URL!,
       {
         //options
-        path: "/api/socket1/io",
+        path: "/api/socket/io",
         addTrailingSlash: false,
       }
     );

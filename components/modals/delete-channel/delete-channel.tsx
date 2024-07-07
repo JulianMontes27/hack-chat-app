@@ -21,7 +21,7 @@ import { useRouter } from "next/navigation";
 import qs from "query-string";
 import { channel } from "diagnostics_channel";
 
-export default function DeletChannelModal() {
+export default function DeleteChannelModal() {
   const [isLoading, setIsLoading] = useState(false);
 
   const { isOpen, onClose, modalType, data } = useModalStore();

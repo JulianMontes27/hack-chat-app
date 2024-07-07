@@ -154,7 +154,7 @@ const ServerIdChannelsList: React.FC<ServerIdChannelsListProps> = async ({
       <section className="flex flex-col gap-4 p-2">
         <div>
           {!!textChannels.length && (
-            <div>
+            <section>
               <ServerSection
                 channelType={ChannelType.TEXT}
                 sectionType={"channels"}
@@ -171,11 +171,11 @@ const ServerIdChannelsList: React.FC<ServerIdChannelsListProps> = async ({
                   key={channel.id}
                 />
               ))}
-            </div>
+            </section>
           )}
         </div>
         {/* //uadio channels */}
-        <div>
+        <section>
           {!!audioChannels.length && (
             <div>
               <ServerSection
@@ -196,9 +196,9 @@ const ServerIdChannelsList: React.FC<ServerIdChannelsListProps> = async ({
               ))}
             </div>
           )}
-        </div>
+        </section>
         {/* //uadio channels */}
-        <div>
+        <section>
           {!!videoChannels.length && (
             <div>
               <ServerSection
@@ -219,9 +219,9 @@ const ServerIdChannelsList: React.FC<ServerIdChannelsListProps> = async ({
               ))}
             </div>
           )}
-        </div>
+        </section>
         {/* //uadio channels */}
-        <div>
+        <section>
           {!!members.length && (
             <div>
               <ServerSection
@@ -237,7 +237,7 @@ const ServerIdChannelsList: React.FC<ServerIdChannelsListProps> = async ({
               ))}
             </div>
           )}
-        </div>
+        </section>
       </section>
     </div>
   );

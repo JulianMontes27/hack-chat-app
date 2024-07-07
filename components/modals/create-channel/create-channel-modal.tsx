@@ -13,7 +13,6 @@ import { useParams, useRouter } from "next/navigation";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -30,9 +29,7 @@ import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -52,7 +49,7 @@ const formSchema = z.object({
   channel_type: z.nativeEnum(ChannelType),
 });
 
-export default function CreateChannelModal() {
+const CreateChannelModal = () => {
   const { isOpen, onClose, modalType, data } = useModalStore();
   const router = useRouter();
   const params = useParams();
@@ -64,6 +61,7 @@ export default function CreateChannelModal() {
       channel_type: data.channelType || ChannelType.TEXT, //the default channel type is 'Text'
     },
   });
+
   useEffect(() => {
     if (data.channelType) {
       form.setValue("channel_type", data.channelType);
@@ -71,12 +69,13 @@ export default function CreateChannelModal() {
       form.setValue("channel_type", ChannelType.TEXT);
     }
   }, [data.channelType, form]);
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       const url = qs.stringifyUrl({
         url: "/api/channels",
         query: {
-          serverId: params.serverId,
+          serverId: params?.serverId,
         },
       });
       await axios.post(url, values);
@@ -97,8 +96,8 @@ export default function CreateChannelModal() {
     >
       <DialogContent className="bg-white text-black sm:max-w-[425px] overflow-hidden rounded-md">
         <DialogHeader className="py-3 px-3">
-          <DialogTitle className="font-bold text-2xl">
-            Create channel
+          <DialogTitle className="font-semibold text-2xl">
+            Create {data.channelType} channel
           </DialogTitle>
         </DialogHeader>
         <div>
@@ -161,7 +160,7 @@ export default function CreateChannelModal() {
                 className="w-full transform transition-transform duration-300 ease-in-out hover:scale-105 px-4 py-2 text-white rounded bg-blue-900"
                 disabled={form.formState.isSubmitting}
               >
-                Submit
+                Create
               </button>
             </form>
           </Form>
@@ -169,4 +168,6 @@ export default function CreateChannelModal() {
       </DialogContent>
     </Dialog>
   );
-}
+};
+
+export default CreateChannelModal;

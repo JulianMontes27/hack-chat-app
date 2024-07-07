@@ -6,7 +6,9 @@ import { auth } from "@clerk/nextjs/server";
 
 import { redirect } from "next/navigation";
 import { findOrCreateChat } from "@/lib/chat";
+
 import ChatHeader from "@/components/serverId/chats/chat-header";
+import ChatInput from "./chat-input";
 
 //this page shows the Chat instance that the currently signed-in user (or current profile) has with the Member clicked
 
@@ -49,13 +51,14 @@ const MemberChatPage: React.FC<MemberChatPageProps> = async ({ params }) => {
   if (!otherMember) return redirect(`/servers/${params.serverId}`);
 
   return (
-    <div>
+    <div className="flex flex-col justify-between h-full">
       <ChatHeader
         serverId={params.serverId}
         name={otherMember.profile.name || `Anonymous Member`}
         type={"chat"}
         imageUrl={otherMember.profile.imgUrl}
       />
+      <ChatInput />
     </div>
   );
 };

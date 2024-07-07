@@ -11,6 +11,29 @@ body,
   padding: 0;
 }
 
+.text-fade {
+  position: relative;
+  display: inline-block;
+}
+
+.text-fade::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 50%;
+  background: linear-gradient(to left, transparent, black);
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  opacity: 0;
+}
+
+.group-hover .text-fade::after {
+  opacity: 1;
+}
+
+
 @layer base {
   :root {
     --background: 0 0% 100%;
