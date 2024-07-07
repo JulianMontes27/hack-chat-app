@@ -44,7 +44,7 @@ const ServerHeader: React.FC<ServerHeaderProps> = ({ server, role }) => {
       >
         <div className="group">
           <button className="h-[48px] w-full text-md font-semibold flex flex-row md:justify-between items-center ">
-            Server Actions
+            {server.name}
             <ChevronDown className="h-5 w-5 hidden md:block group-hover:block transition ml-2 group-hover:" />
           </button>
         </div>

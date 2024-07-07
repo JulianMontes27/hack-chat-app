@@ -19,7 +19,7 @@ import {
 import { useRouter } from "next/navigation";
 
 import qs from "query-string";
-import { channel } from "diagnostics_channel";
+import { Button } from "@/components/ui/button";
 
 export default function DeleteChannelModal() {
   const [isLoading, setIsLoading] = useState(false);
@@ -75,7 +75,7 @@ export default function DeleteChannelModal() {
         </DialogHeader>
         <div className="flex flex-row gap-5">
           <button
-            className="w-full transform transition-transform duration-300 ease-in-out hover:scale-110 px-4 py-2 text-white rounded bg-sky-900"
+            className="w-full transform transition-transform duration-300 ease-in-out hover:scale-110 px-4 py-2 rounded text-black"
             onClick={onClose}
             disabled={isLoading}
           >

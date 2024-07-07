@@ -9,6 +9,7 @@ import { findOrCreateChat } from "@/lib/chat";
 
 import ChatHeader from "@/components/serverId/chats/chat-header";
 import ChatInput from "./chat-input";
+import { channel } from "diagnostics_channel";
 
 //this page shows the Chat instance that the currently signed-in user (or current profile) has with the Member clicked
 
@@ -51,14 +52,19 @@ const MemberChatPage: React.FC<MemberChatPageProps> = async ({ params }) => {
   if (!otherMember) return redirect(`/servers/${params.serverId}`);
 
   return (
-    <div className="flex flex-col justify-between h-full">
+    <div className="flex flex-col h-full relative">
       <ChatHeader
         serverId={params.serverId}
-        name={otherMember.profile.name || `Anonymous Member`}
+        member={otherMember}
         type={"chat"}
         imageUrl={otherMember.profile.imgUrl}
       />
-      <ChatInput />
+      <ChatInput
+        apiUrl={"/api/socket/messages"}
+        query={{ undefined }}
+        name={channel.name}
+        type={"chat"}
+      />
     </div>
   );
 };

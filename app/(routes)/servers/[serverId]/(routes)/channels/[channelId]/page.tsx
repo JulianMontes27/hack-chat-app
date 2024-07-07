@@ -8,6 +8,8 @@ import { auth } from "@clerk/nextjs/server";
 
 import { redirect } from "next/navigation";
 
+import ChatInput from "../../chats/[memberId]/chat-input";
+
 const ServerChannelPage = async ({
   params,
 }: {
@@ -33,9 +35,15 @@ const ServerChannelPage = async ({
   if (!channel || !member) return redirect("/");
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col relative w-full">
       <ChatHeader
         serverId={params.serverId}
+        channel={channel}
+        type={"channel"}
+      />
+      <ChatInput
+        apiUrl={"/api/socket/messages"}
+        query={{ channelId: channel.id, serverId: channel.serverId }}
         name={channel.name}
         type={"channel"}
       />

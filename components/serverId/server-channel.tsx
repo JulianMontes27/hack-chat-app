@@ -15,6 +15,12 @@ interface ServerChannelProps {
   role?: MemberRole;
 }
 
+export const ICON_MAP = {
+  [ChannelType.AUDIO]: <Mic className="mr-2 h-4 w-4" />,
+  [ChannelType.TEXT]: <Hash className="mr-2 h-4 w-4" />,
+  [ChannelType.VIDEO]: <Video className="mr-2 h-4 w-4" />,
+};
+
 const ServerChannel: React.FC<ServerChannelProps> = ({
   channel,
   role,
@@ -23,12 +29,6 @@ const ServerChannel: React.FC<ServerChannelProps> = ({
   const { onOpen } = useModalStore();
   const params = useParams();
   const router = useRouter();
-
-  const ICON_MAP = {
-    [ChannelType.AUDIO]: <Mic className="mr-2 h-4 w-4" />,
-    [ChannelType.TEXT]: <Hash className="mr-2 h-4 w-4" />,
-    [ChannelType.VIDEO]: <Video className="mr-2 h-4 w-4" />,
-  };
 
   const [isHovered, setIsHovered] = useState(false);
 
