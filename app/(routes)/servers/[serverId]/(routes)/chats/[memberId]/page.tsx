@@ -49,7 +49,7 @@ const MemberChatPage: React.FC<MemberChatPageProps> = async ({ params }) => {
   if (!otherMember) return redirect(`/servers/${params.serverId}`);
 
   return (
-    <div className="">
+    <div>
       <ChatHeader
         serverId={params.serverId}
         name={otherMember.profile.name || `Anonymous Member`}
