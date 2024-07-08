@@ -50,7 +50,6 @@ const MemberChatPage: React.FC<MemberChatPageProps> = async ({ params }) => {
     memberOne.profileId === profile.id ? memberTwo : memberOne;
   //since we want to get the OTHER member, if the membeOne.id is the current profile.id, then the other member is memberTwo
   if (!otherMember) return redirect(`/servers/${params.serverId}`);
-
   return (
     <div className="flex flex-col h-full relative">
       <ChatHeader
@@ -62,7 +61,7 @@ const MemberChatPage: React.FC<MemberChatPageProps> = async ({ params }) => {
       <ChatInput
         apiUrl={"/api/socket/messages"}
         query={{ undefined }}
-        name={channel.name}
+        name={otherMember.profile.name || ""}
         type={"chat"}
       />
     </div>

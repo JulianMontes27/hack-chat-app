@@ -6,7 +6,8 @@ import Image from "next/image";
 
 import { UploadDropzone } from "@/lib/uploadthing";
 import "@uploadthing/react/styles.css";
-import { Trash } from "lucide-react";
+import { FileIcon, Trash } from "lucide-react";
+import Link from "next/link";
 
 interface FileUploaderProps {
   onChange: (url?: string) => void;
@@ -43,14 +44,33 @@ const FileUploader: React.FC<FileUploaderProps> = ({
       </div>
     );
   }
+  if (value && fileType === "pdf") {
+    return (
+      <div className="relative flex items-center p-2 mt-2 rounded-md flex-row gap-4 ">
+        <FileIcon className="h-10 w-10" />
+        <Link
+          href={value}
+          target="_blank"
+          rel="noopener noreferer"
+          className="hover:text-blue-900"
+        >
+          {value}
+        </Link>
+        <Trash
+          className="absolute top-0 right-0 text-red-600 transition duration-300 ease-in-out transform hover:scale-110  cursor-pointer"
+          onClick={() => onChange("")}
+        />
+      </div>
+    );
+  }
   return (
     <UploadDropzone
       endpoint={endpoint}
       onClientUploadComplete={(res) => {
-        onChange(res?.[0].url);
+        onChange(res?.[0].url); //this is the field.onchange from the modal-form
       }}
       onUploadError={(error: Error) => {
-        console.log(error);
+        alert(`ERROR! ${error.message}`);
       }}
     />
   );

@@ -12,12 +12,15 @@ export type ModalType =
   | "leave-server"
   | "delete-server"
   | "delete-channel"
-  | "edit-channel";
+  | "edit-channel"
+  | "msg-file";
 //items to send in a modal
 interface ModalData {
   server?: Server;
   channel?: Channel;
   channelType?: ChannelType;
+  apiUrl?: string;
+  query?: Record<string, any>;
 }
 
 interface ModalStore {
