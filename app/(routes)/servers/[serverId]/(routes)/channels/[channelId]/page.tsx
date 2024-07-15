@@ -1,5 +1,3 @@
-import ChatHeader from "@/components/serverId/chats/chat-header";
-
 import { currentProfile } from "@/lib/current-profile";
 
 import prismadb from "@/lib/prismadb";
@@ -8,7 +6,9 @@ import { auth } from "@clerk/nextjs/server";
 
 import { redirect } from "next/navigation";
 
-import ChatInput from "../../chats/[memberId]/chat-input";
+import MessageHeader from "../../_components/messages-component-header";
+import MessagesComponent from "../../_components/messages-content";
+import ChatInput from "../../_components/chat-input";
 
 const ServerChannelPage = async ({
   params,
@@ -30,22 +30,41 @@ const ServerChannelPage = async ({
       serverId: params.serverId,
       profileId: profile.id,
     },
+    include: {
+      profile: true,
+    },
   });
 
   if (!channel || !member) return redirect("/");
 
   return (
-    <div className="h-full flex flex-col relative w-full">
-      <ChatHeader
+    <div className="flex flex-col relative w-full h-full">
+      <MessageHeader
         serverId={params.serverId}
         channel={channel}
         type={"channel"}
       />
+      <div className="flex-1">
+        <MessagesComponent
+          name={channel.name}
+          member={member}
+          chatId={channel.id}
+          apiUrl={"/api/messages"}
+          socketUrl={"/api/socket/messages"}
+          socketQuery={{ channelId: channel.id, serverId: channel.serverId }}
+          paramKey={"channelId"}
+          paramValue={channel.id}
+          type={"channel"}
+        />
+      </div>
       <ChatInput
         apiUrl={"/api/socket/messages"}
-        query={{ channelId: channel.id, serverId: channel.serverId }}
-        name={channel.name}
+        query={{
+          channelId: channel.id,
+          serverId: channel.serverId,
+        }}
         type={"channel"}
+        name={channel.name}
       />
     </div>
   );

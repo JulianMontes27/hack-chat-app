@@ -1,30 +1,38 @@
 import currentProfileForPages from "@/lib/current-profile-pages";
-import { NextApiRequest } from "next";
-
 import prismadb from "@/lib/prismadb";
+
 import { NextApiResponseServerIO } from "@/types/types";
+import { NextApiRequest } from "next";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponseServerIO
 ) {
-  //check if the request is POST
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed." });
+    return res.status(405).json({
+      error: "Method not allowed.",
+    });
   }
-
   try {
     const profile = await currentProfileForPages(req);
+    if (!profile) {
+      return res.status(401).json({ message: "Not authenticated." });
+    }
+
     const { content, fileUrl } = req.body;
     const { channelId, serverId } = req.query;
 
-    if (!profile) return res.status(401).json({ error: "Unauthorized." });
-    if (!serverId) return res.status(400).json({ error: "ServerId missing." });
-    if (!channelId)
-      return res.status(400).json({ error: "ChannelId missing." });
-    if (!content) return res.status(400).json({ error: "Content missing." });
+    if (!serverId) {
+      return res.status(401).json({ message: "ServerId missing." });
+    }
+    if (!channelId) {
+      return res.status(401).json({ message: "ChannelId missing." });
+    }
+    if (!content) {
+      return res.status(401).json({ message: "Content missing." });
+    }
 
-    //check if the user sending the message is a member of the server
+    //is the user sending the message part of the Server?
     const server = await prismadb.server.findFirst({
       where: {
         id: serverId as string,
@@ -38,28 +46,33 @@ export default async function handler(
         members: true,
       },
     });
-    if (!server) return res.status(404).json({ error: "Server not found." });
-
+    if (!server) {
+      return res.status(404).json({ message: "Server not found." });
+    }
+    //does the channel exist??
     const channel = await prismadb.channel.findFirst({
       where: {
         id: channelId as string,
         serverId: serverId as string,
       },
     });
-    if (!channel) return res.status(404).json({ error: "Channel not found." });
+    if (!channel) {
+      return res.status(404).json({ message: "Channel not found." });
+    }
 
-    const member = server.members.find(
+    const member = server.members.filter(
       (member) => member.profileId === profile.id
     );
+    if (!member) {
+      return res.status(401).json({ message: "Member not found." });
+    }
 
-    if (!member) return res.status(404).json({ error: "Member not found." });
-
-    const msg = await prismadb.message.create({
+    const message = await prismadb.message.create({
       data: {
         content,
-        memberId: member.id,
-        channelId: channelId as string,
         fileUrl,
+        memberId: member[0].id,
+        channelId: channel.id as string,
       },
       include: {
         member: {
@@ -70,13 +83,14 @@ export default async function handler(
       },
     });
 
-    const channelKey = `chat:${channelId}:messages`;
+    //emit a socket io to all active connections
+    const channelkey = `chat:${channel.id}:messages`;
 
-    res?.socket?.server?.io.emit(channelKey, msg);
+    res?.socket?.server?.io?.emit(channelkey, message);
 
-    return res.status(200).json(msg);
+    return res.status(200).json(message);
   } catch (error) {
-    console.log("[MESSAGES_POST]", error);
-    return res.status(500).json({ message: "Internal server error." });
+    console.log(error);
+    return res.status(500).json({ message: "Internal error." });
   }
 }

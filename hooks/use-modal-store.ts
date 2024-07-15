@@ -1,8 +1,6 @@
-//contorl all modals in app
 import { Channel, ChannelType, Server } from "@prisma/client";
 import { create } from "zustand";
 
-//type definition
 export type ModalType =
   | "create-server"
   | "invite-member"
@@ -13,7 +11,8 @@ export type ModalType =
   | "delete-server"
   | "delete-channel"
   | "edit-channel"
-  | "msg-file";
+  | "file-upload";
+
 //items to send in a modal
 interface ModalData {
   server?: Server;
@@ -32,6 +31,7 @@ interface ModalStore {
   onClose: () => void;
   logState: () => void;
 }
+//hook to control all modals
 const useModalStore = create<ModalStore>((set, get) => ({
   modalType: null,
   data: {},

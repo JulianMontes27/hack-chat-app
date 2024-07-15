@@ -3,7 +3,6 @@
 import useModalStore from "@/hooks/use-modal-store";
 
 import axios from "axios";
-import qs from "query-string";
 
 import { useRouter } from "next/navigation";
 
@@ -21,10 +20,8 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
 import {
   Dialog,
   DialogContent,
@@ -32,26 +29,24 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
+import qs from "query-string";
+
 const CreateServerFormSchema = z.object({
-  fileUrl: z.string().min(1, {
-    message: "No file uploaded.",
-  }),
+  fileUrl: z.string().min(1),
 });
 
-type MsgFileSchemaType = z.infer<typeof CreateServerFormSchema>;
+type CreateServerFormType = z.infer<typeof CreateServerFormSchema>;
 
-export default function MessageFileModal() {
-  const { modalType, onClose, data, isOpen } = useModalStore();
-  const { query, apiUrl } = data;
+export default function FileUploadModal() {
+  const { isOpen, modalType, data, onClose } = useModalStore();
   const handleClose = () => {
-    form.reset();
     onClose();
   };
 
   const router = useRouter();
 
   // 1. Define your form.
-  const form = useForm<MsgFileSchemaType>({
+  const form = useForm<CreateServerFormType>({
     resolver: zodResolver(CreateServerFormSchema),
     defaultValues: {
       fileUrl: "",
@@ -59,19 +54,18 @@ export default function MessageFileModal() {
   });
 
   // 2. Define a submit handler.
-  async function onSubmit(values: MsgFileSchemaType) {
+  async function onSubmit(values: CreateServerFormType) {
     try {
       const url = qs.stringifyUrl({
-        url: apiUrl || "",
-        query: query,
+        url: data?.apiUrl || "", //theres a possibility that the data has not been passed
+        query: data?.query,
       });
-
       const res = await axios.post(url, {
         ...values,
-        content: values.fileUrl, //upload the
+        content: values.fileUrl,
       });
-      handleClose();
-      router.refresh();
+      form.reset();
+      onClose();
     } catch (error) {
       toast.error(`[POST]: ${error}`, {
         position: "bottom-right",
@@ -81,13 +75,13 @@ export default function MessageFileModal() {
 
   return (
     <Dialog
-      open={isOpen && modalType === "msg-file"}
+      open={isOpen && modalType === "file-upload"}
       onOpenChange={handleClose}
     >
       <DialogContent className="bg-white text-black sm:max-w-[425px] overflow-hidden rounded-md">
         <DialogHeader className="py-3 px-3">
           <DialogTitle className="font-bold text-2xl mb-2">
-            Upload file
+            Add an attachment
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
@@ -97,7 +91,6 @@ export default function MessageFileModal() {
               name="fileUrl"
               render={({ field }) => (
                 <FormItem className="flex flex-col gap-5">
-                  <FormLabel>File Url</FormLabel>
                   <FormControl>
                     <FileUploader
                       endpoint="messageFile"
@@ -115,7 +108,7 @@ export default function MessageFileModal() {
               type="submit"
               className="w-full text-white bg-indigo-500 hover:bg-indigo-500/90"
             >
-              Upload
+              Send
             </Button>
           </form>
         </Form>

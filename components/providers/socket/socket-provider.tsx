@@ -1,52 +1,48 @@
 "use client";
 
-import { createContext, useEffect, useState, useContext } from "react";
-import { io } from "socket.io-client";
+import { createContext, useContext, useEffect, useState } from "react";
+
+import { io as SocketClientIO } from "socket.io-client";
 
 type SocketContextType = {
   socket: any | null;
   isConnected: boolean;
 };
 
-//The Context API provides a means to share values like state, functions, or any data across the component tree without passing props down manually at every level. This is particularly useful for global data that many components need to access.
-
-// Creates a context with default values (null socket and false connection status).
-export const SocketContext = createContext<SocketContextType>({
-  //default values
+const SocketContext = createContext<SocketContextType>({
   socket: null,
   isConnected: false,
 });
 
-//Custom hook to use the SocketContext in functional components. It simplifies accessing the context values.
-export const useSocket = () => {
+export const useSocketContext = () => {
+  //Call useContext to read and subscribe to the context
   return useContext(SocketContext);
 };
 
-//Context provider component that wraps around any children components to provide them with the socket instance and connection status.
-export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
+const SocketProvider = ({ children }: { children: React.ReactNode }) => {
   const [socket, setSocket] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
-
+  //when the provider first mounts...
   useEffect(() => {
-    const socketInstance = new (io as any)(process.env.NEXT_PUBLIC_SITE_URL!, {
-      path: "/api/socket/io",
-      addTrailingSlash: false,
-    });
-
-    socketInstance.on("connect", () => {
+    //initiate a socket instance
+    const socketIoInstance = new (SocketClientIO as any)(
+      process.env.NEXT_PUBLIC_SITE_URL!, //localhost by default in development
+      {
+        path: "/api/socket/io",
+        addTrailingSlash: false,
+      }
+    );
+    socketIoInstance.on("connect", () => {
       setIsConnected(true);
     });
-
-    socketInstance.on("disconnect", () => {
+    socketIoInstance.on("disconnect", () => {
       setIsConnected(false);
     });
 
-    //Updates the state with the new socket instance.
-    setSocket(socketInstance);
+    setSocket(socketIoInstance);
 
-    // Disconnects the socket when the component unmounts to prevent memory leaks.
     return () => {
-      socketInstance.disconnect();
+      socketIoInstance.disconnect();
     };
   }, []);
   return (
@@ -55,3 +51,5 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     </SocketContext.Provider>
   );
 };
+
+export default SocketProvider;

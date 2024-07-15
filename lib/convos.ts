@@ -1,23 +1,23 @@
 import prismadb from "@/lib/prismadb";
 
-export const findOrCreateChat = async (
+export const findOrCreateConversation = async (
   memberOneId: string,
   memberTwoId: string
 ) => {
-  let chat =
-    (await findChat(memberOneId, memberTwoId)) ||
-    (await findChat(memberTwoId, memberOneId));
+  let convo =
+    (await findConversation(memberOneId, memberTwoId)) ||
+    (await findConversation(memberTwoId, memberOneId));
 
-  if (!chat) {
-    chat = await createChat(memberOneId, memberTwoId);
+  if (!convo) {
+    convo = await createConversation(memberOneId, memberTwoId);
   }
 
-  return chat;
+  return convo;
 };
 
-const findChat = async (memberOneId: string, memberTwoId: string) => {
+const findConversation = async (memberOneId: string, memberTwoId: string) => {
   try {
-    return await prismadb.chat.findFirst({
+    return await prismadb.conversation.findFirst({
       where: {
         AND: [{ memberOneId: memberOneId }, { memberTwoId: memberTwoId }],
       },
@@ -29,20 +29,20 @@ const findChat = async (memberOneId: string, memberTwoId: string) => {
         },
         memberTwo: {
           include: {
-            profile: true,  
+            profile: true,
           },
         },
       },
     });
   } catch {
-    return null;
+    return null; //to not block the app
   }
 };
 
-const createChat = async (memberOneId: string, memberTwoId: string) => {
+const createConversation = async (memberOneId: string, memberTwoId: string) => {
   try {
-    //create chat
-    const chat = await prismadb.chat.create({
+    //create Conversation
+    const convo = await prismadb.conversation.create({
       data: {
         memberOneId: memberOneId,
         memberTwoId: memberTwoId,
@@ -60,8 +60,8 @@ const createChat = async (memberOneId: string, memberTwoId: string) => {
         },
       },
     });
-    return chat;
+    return convo;
   } catch {
-    return null; //to not block the app
+    return null;
   }
 };

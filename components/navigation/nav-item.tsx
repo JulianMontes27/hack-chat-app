@@ -17,6 +17,7 @@ interface NavItemProps {
 const NavItem: React.FC<NavItemProps> = ({ id, imageUrl, name }) => {
   const params = useParams();
   const router = useRouter();
+
   return (
     <ActionsTooltip label={`${name}`} side="right" align="center">
       <button
@@ -32,7 +33,9 @@ const NavItem: React.FC<NavItemProps> = ({ id, imageUrl, name }) => {
         />
         <div
           className={cn(
-            "relative group flex mx-3 h-[48px] w-[48px] rounded-[24px] group-hover:rounded-[16px] transition-all overflow-hidden"
+            "relative group flex mx-3 h-[48px] w-[48px] rounded-[24px] group-hover:rounded-[16px] transition-all overflow-hidden mt-2",
+            params?.serverId === id &&
+              "rounded-[16px] transition duration-300 ease-in-out transform hover:scale-110  "
           )}
         >
           <Image src={imageUrl} alt={name} fill />

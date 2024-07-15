@@ -77,8 +77,8 @@ model Member{
 
   messages Message[]
 
-  chatsInitiated Chat[] @relation("MemberOne") //#member-one for this member
-  chatsReceived Chat[] @relation("MemberTwo") //#member-two times this member was invited to chat(not-initiated)
+  convosInitiated Conversation[] @relation("MemberOne") //#member-one for this member
+  convosReceived Conversation[] @relation("MemberTwo") //#member-two times this member was invited to chat(not-initiated)
 
   directMessages DirectMessage[]
 
@@ -110,7 +110,7 @@ model Channel{
 //MESSAGE for channels
 model Message{
   id String @id @default(uuid())
-  content String @db.Text //long messages
+  content String @db.Text //allow for long messages
 
   fileUrl String? @db.Text
 
@@ -125,11 +125,12 @@ model Message{
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("messages")
+  @@map("channel_messages")
 }
 
 //Chat between two Members
-model Chat{
+//unique collection of Messages between two Channel Members
+model Conversation{
   id String @id @default(uuid())
 
   memberOneId String
@@ -140,22 +141,22 @@ model Chat{
 
   directMessages DirectMessage[]
 
-  @@unique([memberOneId,memberTwoId]) //each Chat must be unique. There cant be two or more copies of the same Chat (same members)
-
-  @@map("chats")
+  @@unique([memberOneId,memberTwoId]) //each Conversation must be unique. There cant be two or more copies of the same Conversation (same Members)
+  @@map("convos")
 }
 
-//for Chat instances
+//Messages for Conversations
 model DirectMessage{
   id String @id @default(uuid())
+  
   content String @db.Text
   fileUrl String? @db.Text
 
   memberId String
   member Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
 
-  chatId String
-  chat Chat @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  conversationId String
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

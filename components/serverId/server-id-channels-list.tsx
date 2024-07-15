@@ -97,7 +97,7 @@ const ServerIdChannelsList: React.FC<ServerIdChannelsListProps> = async ({
   const videoChannels = server?.channels.filter(
     (channel) => channel.type === ChannelType.VIDEO
   );
-  //get members, and filter them to not show the current profile
+  //get members, and remove current profile
   const members = server?.members.filter(
     (member) => member.profileId !== profile?.id
   );
@@ -174,7 +174,7 @@ const ServerIdChannelsList: React.FC<ServerIdChannelsListProps> = async ({
             </section>
           )}
         </div>
-        {/* //uadio channels */}
+        {/* //audio channels */}
         <section>
           {!!audioChannels.length && (
             <div>
@@ -197,7 +197,7 @@ const ServerIdChannelsList: React.FC<ServerIdChannelsListProps> = async ({
             </div>
           )}
         </section>
-        {/* //uadio channels */}
+        {/* //video channels */}
         <section>
           {!!videoChannels.length && (
             <div>
@@ -220,18 +220,17 @@ const ServerIdChannelsList: React.FC<ServerIdChannelsListProps> = async ({
             </div>
           )}
         </section>
-        {/* //uadio channels */}
+        {/* //members */}
         <section>
           {!!members.length && (
             <div>
               <ServerSection
                 server={server}
-                channelType={ChannelType.AUDIO}
                 sectionType={"members"}
                 role={role}
                 label={"Members"}
               />
-              {/* //map text channels */}
+              {/* //map members */}
               {members.map((member) => (
                 <ServerMember key={member.id} member={member} server={server} />
               ))}

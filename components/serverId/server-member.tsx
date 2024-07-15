@@ -23,7 +23,7 @@ const ServerMember: React.FC<ServerMemberProps> = ({ member, server }) => {
   const params = useParams();
 
   const handleClick = () => {
-    router.push(`/servers/${params?.serverId}/chats/${member.id}`);
+    router.push(`/servers/${params.serverId}/conversations/${member.id}`);
   };
   return (
     <button
