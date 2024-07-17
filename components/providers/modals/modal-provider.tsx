@@ -12,6 +12,7 @@ import ManageMembersModal from "@/components/modals/manage-members/manage-member
 import DeleteChannelModal from "@/components/modals/delete-channel/delete-channel";
 import EditChannelModal from "@/components/modals/edit-channel/edit-channel";
 import FileUploadModal from "@/components/modals/file-upload/file-upload-modal";
+import DeleteMessageModal from "@/components/modals/delete-message/delete-message";
 
 export const ModalProvider = () => {
   const [isMounted, setisMounted] = useState(false);
@@ -34,6 +35,7 @@ export const ModalProvider = () => {
       <EditChannelModal />
       <CreateChannelModal />
       <FileUploadModal />
+      <DeleteMessageModal />
     </>
   );
 };

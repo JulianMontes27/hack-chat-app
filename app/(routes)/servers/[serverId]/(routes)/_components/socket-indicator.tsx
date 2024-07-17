@@ -25,7 +25,7 @@ const SocketIndicator = () => {
             </div>
           )}
         </TooltipTrigger>
-        <TooltipContent>{isConnected && <div>Connected</div>}</TooltipContent>
+        <TooltipContent>{isConnected && <div>Live</div>}</TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );

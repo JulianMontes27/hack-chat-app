@@ -44,10 +44,11 @@ const ServerChannelPage = async ({
         channel={channel}
         type={"channel"}
       />
-      <div className="flex-1">
+      <div className="flex-1 mt-12">
         <MessagesComponent
           name={channel.name}
           member={member}
+          channel={channel}
           chatId={channel.id}
           apiUrl={"/api/messages"}
           socketUrl={"/api/socket/messages"}

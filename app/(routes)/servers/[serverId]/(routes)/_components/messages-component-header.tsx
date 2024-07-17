@@ -2,11 +2,10 @@ import MobileDropdown from "../../../../../../components/serverId/mobile-dropdow
 import UserAvatar from "@/components/modals/manage-members/user-avatar";
 import SocketIndicator from "./socket-indicator";
 
-import { ModeToggle } from "@/components/providers/themes/toggle-theme";
-import { UserButton } from "@clerk/nextjs";
 import { Channel, ChannelType, Member, Profile } from "@prisma/client";
 
 import { Hash, Mic, Video } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface ChatHeaderProps {
   serverId: string;
@@ -30,7 +29,11 @@ const MessageHeader: React.FC<ChatHeaderProps> = ({
   memberToReceive,
 }) => {
   return (
-    <div className="text-md font-semibold px-3 flex items-center  gap-2.5 justify-around md:p-3">
+    <div
+      className={cn(
+        "fixed z-999 top-0 w-full p-3 text-xl font-semibold flex items-center"
+      )}
+    >
       <div className="flex flex-row gap-2">
         <div className="md:hidden">
           <MobileDropdown serverId={serverId} />
@@ -52,17 +55,6 @@ const MessageHeader: React.FC<ChatHeaderProps> = ({
           )}
         </div>
         <SocketIndicator />
-      </div>
-      <div className="flex flex-row items-center gap-2">
-        <ModeToggle />
-        <UserButton
-          afterSignOutUrl="/"
-          appearance={{
-            elements: {
-              avatarBox: "h-[40px] w-[40px]",
-            },
-          }}
-        />
       </div>
     </div>
   );

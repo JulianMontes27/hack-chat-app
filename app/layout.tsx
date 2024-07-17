@@ -9,6 +9,7 @@ import { ThemeProvider } from "@/providers/theme-provider";
 import { ModalProvider } from "@/components/providers/modals/modal-provider";
 import { Toaster } from "react-hot-toast";
 import SocketProvider from "@/components/providers/socket/socket-provider";
+import QueryProvider from "@/components/providers/react-query/query-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,7 +35,7 @@ export default function RootLayout({
           >
             <SocketProvider>
               <ModalProvider />
-              {children}
+              <QueryProvider>{children}</QueryProvider>
               <Toaster />
             </SocketProvider>
           </ThemeProvider>

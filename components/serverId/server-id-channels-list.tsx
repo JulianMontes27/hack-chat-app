@@ -14,6 +14,8 @@ import { Mic, ShieldCheckIcon, Text, User, Video } from "lucide-react";
 import ServerSection from "./server-section";
 import ServerChannel from "./server-channel";
 import ServerMember from "./server-member";
+import { ModeToggle } from "../providers/themes/toggle-theme";
+import { UserButton } from "@clerk/nextjs";
 
 interface ServerIdChannelsListProps {
   serverId: string;
@@ -238,6 +240,19 @@ const ServerIdChannelsList: React.FC<ServerIdChannelsListProps> = async ({
           )}
         </section>
       </section>
+      <div className="flex items-center gap-2 flex-1 border justify-end flex-col">
+        <div className="flex flex-row  p-4 w-full justify-start">
+          <UserButton
+            afterSignOutUrl="/"
+            appearance={{
+              elements: {
+                avatarBox: "h-[40px] w-[40px]",
+              },
+            }}
+          />
+          <ModeToggle />
+        </div>
+      </div>
     </div>
   );
 };

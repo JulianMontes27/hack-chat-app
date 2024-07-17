@@ -24,14 +24,13 @@ interface ChatInputProps {
 }
 
 const formSchema = z.object({
-  content: z.string().min(1).max(50),
+  content: z.string().min(1).max(200),
   fileUrl: z.string(),
 });
 
 const ChatInput: React.FC<ChatInputProps> = ({ query, apiUrl, name, type }) => {
   const { onOpen } = useModalStore();
-  const { isConnected } = useSocketContext();
-  
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -50,7 +49,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ query, apiUrl, name, type }) => {
         query,
       });
       await axios.post(url, values);
-      
+
       form.reset();
     } catch (error) {
       console.log(error);
@@ -58,14 +57,17 @@ const ChatInput: React.FC<ChatInputProps> = ({ query, apiUrl, name, type }) => {
   }
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="p-3">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="p-3 absolute bottom-0 w-full"
+      >
         <FormField
           control={form.control}
           name="content"
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <section className="relative rounded-md">
+                <section className="relative rounded-md ">
                   <button
                     type="button"
                     className="absolute top-2 left-2 h-[24px] w-[24px]"

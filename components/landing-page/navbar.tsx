@@ -7,7 +7,6 @@ import React, { useEffect, useState } from "react";
 
 import { cn } from "@/lib/utils";
 import NavbarDropdownMenu from "./nav-dropdown";
-import { Button } from "../ui/button";
 
 const Navbar = () => {
   const [scroll, setScroll] = useState(false);
@@ -74,7 +73,7 @@ const Navbar = () => {
                   <li key={route.href}>
                     <Link
                       href={route.href}
-                      className="transition hover:text-pink-500 hover:border-b-2 text-md"
+                      className="transition duration-300 ease-in-out transform hover:scale-125 hover:shadow-red-xl  text-white rounded bg-transparent"
                     >
                       {route.label}
                     </Link>
@@ -84,7 +83,7 @@ const Navbar = () => {
             </nav>
           </div>
           <div className="flex flex-row gap-5 items-center">
-            <div className="transition duration-300 ease-in-out transform hover:scale-110  hover:shadow-red-xl px-4 py-2 bg-white text-black rounded">
+            <div className="transition duration-300 ease-in-out transform hover:scale-110  hover:shadow-red-xl  text-white rounded bg-transparent">
               <SignInButton />
             </div>
             <div className="md:hidden ">
