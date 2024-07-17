@@ -27,7 +27,7 @@ const Sidebar = async ({}) => {
   });
 
   return (
-    <div className="h-full w-full bg-[#D3D3D3] dark:bg-[#191e25] text-primary  flex flex-col items-center border-none ">
+    <div className="bg-[#D3D3D3] dark:bg-[#191e25] text-primary flex flex-col items-center border-none fixed inset-y-0 z-40">
       <SidebarAction />
       <Separator />
 

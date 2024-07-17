@@ -16,15 +16,14 @@ import {
 } from "@/components/ui/dialog";
 
 import qs from "query-string";
+import { useRouter } from "next/navigation";
 
 export default function DeleteMessageModal() {
   const [isLoading, setIsLoading] = useState(false);
 
   const { isOpen, onClose, modalType, data } = useModalStore();
 
-  const handleClose = () => {
-    onClose();
-  };
+  const router = useRouter();
 
   const handleSubmit = async () => {
     try {
@@ -34,8 +33,9 @@ export default function DeleteMessageModal() {
         query: data.query,
       });
       await axios.delete(url);
-
-      handleClose();
+      
+      router.refresh();
+      onClose();
     } catch (error) {
       toast.error("Internal error.");
     } finally {
@@ -56,7 +56,7 @@ export default function DeleteMessageModal() {
             Delete message
           </DialogTitle>
           <div className="text-zinc-500">
-            Are you sure you want to delete the folliwing message by{" "}
+            Are you sure you want to delete the following message by{" "}
             <strong>{data.member?.profile.name}</strong>
           </div>
         </DialogHeader>

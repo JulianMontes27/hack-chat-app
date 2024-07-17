@@ -5,7 +5,7 @@ import React from "react";
 interface ChatWelcomeProps {
   type: "channel" | "conversation";
   name: string;
-  channel: Channel;
+  channel?: Channel;
 }
 
 const channelType = {
@@ -20,7 +20,7 @@ const ChatWelcome: React.FC<ChatWelcomeProps> = ({ type, name, channel }) => {
       {type === "channel" && (
         <div className="flex flex-row items-center gap-3">
           <div className="h-[69px] w-[69px] rounded-full bg-zinc-500 dark:bg-zinc-900/75 flex items-center justify-center">
-            {channelType[channel.type]}
+            {(channel && channelType[channel.type]) || <Hash />}
           </div>
           <p className="text-xl md:text-3xl font-bold flex flex-row gap-2">
             {type === "channel" ? (

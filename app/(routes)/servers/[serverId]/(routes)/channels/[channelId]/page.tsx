@@ -25,6 +25,7 @@ const ServerChannelPage = async ({
       id: params.channelId,
     },
   });
+  
   const member = await prismadb.member.findFirst({
     where: {
       serverId: params.serverId,

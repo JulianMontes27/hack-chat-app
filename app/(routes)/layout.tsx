@@ -11,7 +11,7 @@ const MainRoutesLayout: React.FC<MainRoutesLayoutProps> = async ({
 }) => {
   return (
     <div className="flex flex-row h-full w-full">
-      <section className="hidden md:flex flex-col h-full border w-[104px] overflow-x-hidden z-30">
+      <section className="hidden md:flex flex-col h-full border overflow-x-hidden z-30 w-[80px] ">
         <Sidebar />
       </section>
       <main className="w-full h-full">{children}</main>

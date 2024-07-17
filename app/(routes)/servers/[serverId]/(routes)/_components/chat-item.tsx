@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import UserAvatar from "@/components/modals/manage-members/user-avatar";
 import ActionsTooltip from "@/components/tootltip";
 
-import { Member, Profile } from "@prisma/client";
+import { Member, MemberRole, Profile } from "@prisma/client";
 import { Edit, FileIcon, ShieldAlert, ShieldCheck, Trash } from "lucide-react";
 
 import Link from "next/link";
@@ -25,6 +25,7 @@ import { Button } from "@/components/ui/button";
 import qs from "query-string";
 import axios from "axios";
 import useModalStore from "@/hooks/use-modal-store";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   content: z.string().min(2).max(50),
@@ -66,6 +67,8 @@ const ChatItem: React.FC<ChatItemProps> = ({
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
   const { onOpen } = useModalStore();
+
+  const router = useRouter();
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -119,21 +122,38 @@ const ChatItem: React.FC<ChatItemProps> = ({
   const isPDF = fileType === "pdf" && fileUrl;
   const isImage = !isPDF && fileUrl;
 
-  const isAdmin = member.role === "ADMIN";
-  const isMod = member.role === "MOD";
-  const isOwner = currentMember.id === member.id;
-  const canDeleteMessage = !deleted && (isAdmin || isMod || isOwner);
-  const canEditMessage = !deleted && isOwner && !fileUrl;
+  const isAdmin = member.role === MemberRole.ADMIN;
+  const isMod = member.role === MemberRole.MOD;
+
+  const isCurrentMemberOwner = currentMember.id === member.id;
+  const isCurrentMemberMod = currentMember.role === MemberRole.MOD;
+  const isCurrentMemberAdmin = currentMember.role === MemberRole.ADMIN;
+
+  const canEditMessage = !deleted && isCurrentMemberOwner && !fileUrl;
+
+  const canDeleteMessage =
+    !deleted &&
+    (isCurrentMemberOwner || isCurrentMemberAdmin || isCurrentMemberMod);
 
   return (
     <div className="relative flex items-start gap-2  p-4 transition w-full flex-col group">
       <div className="group flex gap-x-2 items-center justify-start w-full ">
         <div className="cursor-pointer hover:drop-shadow-md transition">
-          <UserAvatar src={member.profile.imgUrl} className="" />
+          <UserAvatar src={member.profile.imgUrl} />
         </div>
         <ActionsTooltip label={member.role}>
           <div className="flex items-center gap-2">
-            {member.profile.name}
+            <p
+              className="cursor-pointer hover:scale-105 transition"
+              onClick={() => {
+                router.push(
+                  `/servers/${member.serverId}/conversations/${member.id}`
+                );
+              }}
+            >
+              {member.profile.name}
+            </p>
+
             {roleIconMap[member.role]}
           </div>
         </ActionsTooltip>
@@ -214,17 +234,16 @@ const ChatItem: React.FC<ChatItemProps> = ({
             </Form>
           )}
         </div>
-
-        {canDeleteMessage && (
-          <div className="hidden group-hover:flex items-center gap-x-2 absolute p-1 top-2 right-5  rounded-sm">
-            {canEditMessage && (
-              <Edit
-                className="h-5 w-5 ml-auto text-zinc-400 hover:text-zinc-600 cursor-pointer dark:text-zinc-300 dark:hover:text-zinc-100 transition"
-                onClick={() => {
-                  setIsEditing((prev) => !prev);
-                }}
-              />
-            )}
+        <div className="hidden group-hover:flex items-center gap-x-2 absolute p-1 top-2 right-5  rounded-sm">
+          {canEditMessage && (
+            <Edit
+              className="h-5 w-5 ml-auto text-zinc-400 hover:text-zinc-600 cursor-pointer dark:text-zinc-300 dark:hover:text-zinc-100 transition"
+              onClick={() => {
+                setIsEditing((prev) => !prev);
+              }}
+            />
+          )}
+          {canDeleteMessage && (
             <Trash
               className="h-5 w-5 ml-auto text-zinc-400 cursor-pointer hover:text-rose-500  transition"
               onClick={() => {
@@ -235,8 +254,8 @@ const ChatItem: React.FC<ChatItemProps> = ({
                 });
               }}
             />
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

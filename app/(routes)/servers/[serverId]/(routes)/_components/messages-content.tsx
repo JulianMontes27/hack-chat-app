@@ -16,7 +16,7 @@ import { format } from "date-fns";
 interface MessagesComponentProps {
   name: string;
   member: Member;
-  channel: Channel;
+  channel?: Channel;
   chatId: string;
   apiUrl: string;
   socketUrl: string;
